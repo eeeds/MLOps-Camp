@@ -64,3 +64,5 @@ git clone https://github.com/DataTalksClub/mlops-zoomcamp.git
 ```
 ## Pair a port with the EC2 instance
 ## Then creates the file duration-prediction.ipynb
+## Download green taxi data from the following link [Green Taxi Data](https://www1.nyc.gov/site/tlc/about/tlc-trip-record-data.page)
+
