@@ -63,6 +63,10 @@ sudo usermod -aG docker $USER
 git clone https://github.com/DataTalksClub/mlops-zoomcamp.git
 ```
 ## Pair a port with the EC2 instance
-## Then creates the file duration-prediction.ipynb
-## Download green taxi data from the following link [Green Taxi Data](https://www1.nyc.gov/site/tlc/about/tlc-trip-record-data.page)
+# Then creates the file duration-prediction.ipynb
+### Download green taxi data from the following link [Green Taxi Data](https://www1.nyc.gov/site/tlc/about/tlc-trip-record-data.page)
 
+# After making the model, we talked about the madurity of ML
+[MLOps Madurity Model](https://docs.microsoft.com/en-us/azure/architecture/example-scenario/mlops/mlops-maturity-model)
+
+# Do homework [Homework](homework)
