@@ -15,3 +15,36 @@
 * Error prone
 * No standard format
 * Visibility and Collaboration
+## MLflow
+An open source plattform for the machine learning research.
+It's just a python library that allows you to track your experiments and it contains:
+* Tracking
+* Models
+* Model Registry
+* Projects
+
+![Tracking Experiments with MLflow](tracking_experiments.PNG)
+
+## I'll use conda for create a environment for my experiments with Python = 3.9
+```
+conda create -n mlflow_enviroment python=3.9
+```
+## Activate enviroment
+```
+activate mlflow_enviroment
+```
+
+## Install Mlflow with this command
+```
+pip install mlflow
+```
+
+## Install all the libraries that we gonna use
+```
+pip install -r requirements.txt
+```
+## Run MLflow UI with backend configure (Remember to put this command in path of the files that you want to track)
+```
+mlflow ui --backend-store-uri=sqlite:///mlflow.db
+```
+
