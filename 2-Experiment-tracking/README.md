@@ -125,3 +125,17 @@ The autologger then not only stores the model parameters for ease of use, it als
 + `conda.yaml` and `requirements.txt`: Files which define the current envrionment for use with either `conda` or `pip` respectively
 + `MLmodel` an internal MLflow file for organization
 + Other framework-specific files such as the model itself
+## Loading Models:
+
+We can use the model to make predictions with multiple ways depending on what we need:
++ We may load the model as a Spark UDF (User Defined Function) for use with Spark Dataframes
++ We may load the model as a MLflow PyFuncModel structure, to then use to predict data in a Pandas DataFrame, NumPy Array or SciPy Sparse Array. The obtained interface is general for all models from all frameworks
++ We may load the model as is, i.e: load the XGBoost model as an XGBoost model and treat it as such
+
+The first two methods are explained briefly in the MLflow artifacts page for each run, for the latter we may use (XGBoost example):
+```python
+logged_model = 'runs:/9245396b47c94513bbf9a119b100aa47/models' # Model UUID from the MLflow Artifact page for the run
+
+xgboost_model = mlflow.xgboost.load_model(logged_model)
+```
+the resultant `xgboost_model` is an XGBoost `Booster` object which behaves like any XGBoost model. We can predict as normal and even use XGBoost Booster functions such as `get_fscore` for feature importance.
