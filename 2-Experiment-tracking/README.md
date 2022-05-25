@@ -48,3 +48,80 @@ pip install -r requirements.txt
 mlflow ui --backend-store-uri=sqlite:///mlflow.db
 ```
 
+## Hyperparameter Optimizaiton Tracking:
+
+By wrapping the `hyperopt` Optimization objective inside a `with mlflow.start_run()` block, we can track every optimization run that was ran by `hyperopt`. We then log the parameters passed by `hyperopt` as well as the metric as follows:
+
+```python
+
+
+import xgboost as xgb
+
+from hyperopt import fmin, tpe, hp, STATUS_OK, Trials
+from hyperopt.pyll import scope
+
+train = xgb.DMatrix(X_train, label=y_train)
+valid = xgb.DMatrix(X_val, label=y_val)
+
+def objective(params):
+    with mlflow.start_run():
+        mlflow.set_tag("model", "xgboost")
+        mlflow.log_params(params)
+        booster = xgb.train(
+            params=params,
+            dtrain=train,
+            num_boost_round=1000,
+            evals=[(valid, 'validation')],
+            early_stopping_rounds=50
+        )
+        y_pred = booster.predict(valid)
+        rmse = mean_squared_error(y_val, y_pred, squared=False)
+        mlflow.log_metric("rmse", rmse)
+
+    return {'loss': rmse, 'status': STATUS_OK}
+
+search_space = {
+    'max_depth': scope.int(hp.quniform('max_depth', 4, 100, 1)),
+    'learning_rate': hp.loguniform('learning_rate', -3, 0),
+    'reg_alpha': hp.loguniform('reg_alpha', -5, -1),
+    'reg_lambda': hp.loguniform('reg_lambda', -6, -1),
+    'min_child_weight': hp.loguniform('min_child_weight', -1, 3),
+    'objective': 'reg:linear',
+    'seed': 42
+}
+
+best_result = fmin(
+    fn=objective,
+    space=search_space,
+    algo=tpe.suggest,
+    max_evals=50,
+    trials=Trials()
+)
+
+```
+
+In this block, we defined the search space and the objective than ran the optimizer. We wrap the training and validation block inside `with mlflow.start_run()` and log the used parameters using `log_params` and validation RMSE using `log_metric`.
+
+In the UI we can see each run of the optimizer and compare their metrics and parameters. We can also see how different parameters affect the RMSE using Parallel Coordinates Plot, Scatter Plot (1 parameter at a time) and Contour Plot.
+## Filter in the UI
+```
+tags.model='xgboost'
+```
+## Autologging: 
+
+Instead of logging the parameters by "Hand" by specifiying the logged parameters and passing them. We may use the Autologging feature in MLflow. There are two ways to use Autologging; First by enabling it globally in the code/Notebook using 
+```python
+mlflow.autolog()
+```
+
+or by enabling the framework-specific autologger; ex with XGBoost:
+
+```python
+mlflow.xgboost.autolog()
+```
+Both must be done before running the experiments.
+
+The autologger then not only stores the model parameters for ease of use, it also stores other files inside the `model` (can be specified) folder inside our experiment artifact folder, these files include:
++ `conda.yaml` and `requirements.txt`: Files which define the current envrionment for use with either `conda` or `pip` respectively
++ `MLmodel` an internal MLflow file for organization
++ Other framework-specific files such as the model itself
