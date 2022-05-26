@@ -139,3 +139,95 @@ logged_model = 'runs:/9245396b47c94513bbf9a119b100aa47/models' # Model UUID from
 xgboost_model = mlflow.xgboost.load_model(logged_model)
 ```
 the resultant `xgboost_model` is an XGBoost `Booster` object which behaves like any XGBoost model. We can predict as normal and even use XGBoost Booster functions such as `get_fscore` for feature importance.
+## Model Registry:
+
+Just as MLflow helps us store, compare and deal with ML experiment runs. It also allows us to store Models and categoerize them. While it may be possible to store models in a folder structure manually, doing this is cumbersome and leaves us open to errors. MLflow deals with this using the Model Registry, where models may be stored and labeled depending on their status within the project.
+
+### Storing Models in the Registry:
+
+In order to register models using the UI, we select the run whose model we want to register and then select "Register Model". There we may either create a new model registry or register the model into an existing registry. We can view the registry and the models therein by selecting the "Models" tab in the top and selecting the registry we want.
+
+### Promoting and Demoting Models in the registry:
+
+Models in the registry are labeled either as Staging, Production or Archive. Promoting and demoting a model can be done by selecting the model in the registry and selecting the stage of the model in the drop down "Stage" Menu at the top.
+
+## Interacting with MLflow through the Tracking Client:
+
+In order to automate the process of registering/promoting/demoting models, we use the Tracking Client API initialized as described above:
+
+```python
+from mlflow.tracking import MlflowClient
+
+MLFLOW_TRACKING_URI = "sqlite:///mlflow.db"
+
+client = MlflowClient(tracking_uri=MLFLOW_TRACKING_URI)
+```
+
+we can then use the client to interface with the MLflow backend as with the UI.
+
+### Selecting runs:
+
+We can search for runs by ascending order of metric score using the API by:
+
+```python
+from mlflow.entities import ViewType
+
+runs = client.search_runs(
+    experiment_ids='1',    # Experiment ID we want
+    filter_string="metrics.rmse < 7",
+    run_view_type=ViewType.ACTIVE_ONLY,
+    max_results=5,
+    order_by=["metrics.rmse ASC"]
+)
+```
+We can then get information about the selected runs from the resulting `runs` enumerator:
+```python
+for run in runs:
+    print(f"run id: {run.info.run_id}, rmse: {run.data.metrics['rmse']:.4f}")
+```
+
+### Interacting with the Model Registry:
+
+We can add a run model to a registry using:
+```python
+mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
+
+run_id = "9245396b47c94513bbf9a119b100aa47"
+model_uri = f"runs:/{run_id}/models"
+mlflow.register_model(model_uri=model_uri, name="nyc-taxi-regressor")
+```
+
+we can get the models  in a model registry:
+```python
+model_name = "nyc-taxi-regressor"
+latest_versions = client.get_latest_versions(name=model_name)
+
+for version in latest_versions:
+    print(f"version: {version.version}, stage: {version.current_stage}")
+```
+
+promote a model to staging:
+```python
+model_version = 4
+new_stage = "Staging"
+client.transition_model_version_stage(
+    name=model_name,
+    version=model_version,
+    stage=new_stage,
+    archive_existing_versions=False
+)
+```
+
+update the description of a model:
+```python
+from datetime import datetime
+
+date = datetime.today().date()
+client.update_model_version(
+    name=model_name,
+    version=model_version,
+    description=f"The model version {model_version} was transitioned to {new_stage} on {date}"
+)
+```
+
+these can then be used to automate the promotion of packages into production or the archival of older models.
