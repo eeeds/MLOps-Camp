@@ -142,6 +142,7 @@ the resultant `xgboost_model` is an XGBoost `Booster` object which behaves like 
 ## Model Registry:
 
 Just as MLflow helps us store, compare and deal with ML experiment runs. It also allows us to store Models and categoerize them. While it may be possible to store models in a folder structure manually, doing this is cumbersome and leaves us open to errors. MLflow deals with this using the Model Registry, where models may be stored and labeled depending on their status within the project.
+![Model Registry](model-registry.PNG)
 
 ### Storing Models in the Registry:
 
