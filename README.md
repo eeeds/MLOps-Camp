@@ -18,3 +18,9 @@
 * Model registry
 * Mlflow in practice
 * Homework
+### [Module 3: Orchestration](3-Orchestration)
+* Workflow orchestration
+* Prefect 2.0
+* Turning a notebook into a pipeline
+* Deployment of Prefect Flow
+* Homework
