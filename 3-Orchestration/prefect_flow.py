@@ -145,3 +145,5 @@ def main(train_path: str="./data/green_tripdata_2021-01.parquet",
     valid = xgb.DMatrix(X_val, label=y_val)
     train_model_search(train, valid, y_val)
     train_best_model(train, valid, y_val, dv)
+
+main()
