@@ -15,16 +15,19 @@ def read_data(path):
     df = pd.read_parquet(path)
     return df
 @task
-def get_paths(date:datetime.date=None):
+def get_paths(date):
+    logger = get_run_logger()
     if date==None:
         date = datetime.date.today()
     else:
-        date = date
+        date = datetime.strptime(date, '%Y-%m-%d').date()
     #date is given, train data is date - 2 months, val data is date - 1 month
     train_date = date - pd.DateOffset(months=2)
     train_path = f'./data/fhv_tripdata_{train_date.strftime("%Y-%m")}.parquet'
     val_date = date - pd.DateOffset(months=1)
     val_path = f'./data/fhv_tripdata_{val_date.strftime("%Y-%m")}.parquet'
+    logger.info(f'Train path: {train_path}')
+    logger.info(f'Val path: {val_path}')
     return train_path, val_path
 
 @task
@@ -71,19 +74,21 @@ def run_model(df, categorical, dv, lr):
     logger.info(f"The MSE of validation is: {mse}")
     return 
 @flow(task_runner=SequentialTaskRunner())
-def main(train_path: str = './data/fhv_tripdata_2021-01.parquet', 
-           val_path: str = './data/fhv_tripdata_2021-02.parquet'):
+def main(date='2021-08-15'):
 
     categorical = ['PUlocationID', 'DOlocationID']
 
+    train_path, val_path = get_paths(date).result()
     df_train = read_data(train_path)
-    df_train_processed = prepare_features(df_train, categorical)
-
     df_val = read_data(val_path)
+
+    df_train_processed = prepare_features(df_train, categorical)
     df_val_processed = prepare_features(df_val, categorical, False)
 
     # train the model
     lr, dv = train_model(df_train_processed, categorical).result()
     run_model(df_val_processed, categorical, dv, lr)
+
+    #Saving the models
 
 main()

@@ -119,7 +119,8 @@ The validation MSE is:
 * 11.837
 * 12.037
 * 12.237
-
+## Anser: MSE=11.637
+![MSE obtained](./images/Q2.PNG)
 ## Q3. Saving the model and artifacts
 
 At the moment, we are not saving the model and vectorizer for future use. You don't need a new task for this, you can just add it inside the `flow`. The requirements for filenames to save it as were mentioned in the Motivation section. They are pasted again here:
