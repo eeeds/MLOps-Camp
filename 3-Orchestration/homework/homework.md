@@ -62,7 +62,8 @@ We want to bring this to workflow orchestration to add observability around it. 
 * `run_model`
 
 Important: change all `print` statements to use the Prefect logger. Using the `print` statement will not appear in the Prefect UI. You have to call `get_run_logger` at the start of the task to use it.
-## Answer: `train_model`
+## Answer: `train_model`, code in:
+[Code](homework.py)
 ## Q2. Parameterizing the flow
 
 Right now there are two parameters for `main()` called `train_path` and `val_path`. We want to change the flow function to accept `date` instead. `date` should then be passed to a task that gives both the `train_path` and `val_path` to use.
@@ -119,7 +120,7 @@ The validation MSE is:
 * 11.837
 * 12.037
 * 12.237
-## Anser: MSE=11.637
+## Answer: MSE=11.637
 ![MSE obtained](./images/Q2.PNG)
 ## Q3. Saving the model and artifacts
 
@@ -150,7 +151,8 @@ prefect orion start
 ```
 
 You should be able to see previous Flow runs and the most recent successful runs. Navigate to some of them. Take time to explore the UI. The radar plot would be a good thing to share on social media if you participate in those posts.
-
+## Answer: 13,000 bytes
+![DictVectorizer model file size](./images/Q3.PNG)
 ## Q4. Creating a deployment with a CronSchedule
 
 We previously showed the `IntervalSchedule` in the video tutorials. In some cases, the interval is too rigid. For example, what if we wanted to run this `flow` on the 15th of every month? An interval of 30 days would not be in sync. In cases like these, the `CronSchedule` is more appropriate. The documentation for that is [here](https://orion-docs.prefect.io/concepts/schedules/#cronschedule)
@@ -169,6 +171,10 @@ What is the Cron expression to run a flow at 9 AM every 15th of the month?
 Hint: there are many Cron to English tools. Try looking for one to help you.
 
 Create a deployment with `prefect deployment create` after you write your `DeploymentSpec`
+## Answer: 0 9 15 * *
+## DeploymentSpec is on:
+[deployment.py](deployment.py) \
+![DeploymentSpec](./images/Q4.PNG)
 
 
 ## Q5. Viewing the Deployment 
@@ -181,7 +187,8 @@ How many flow runs are scheduled by Prefect in advance? You should not be counti
 * 3
 * 10
 * 25
-
+## Answer: 3
+![Viewing the Deployment](./images/Q5.PNG)
 ## Q6. Creating a work-queue
 
 In order to run this flow, you will need an agent and a work queue. Because we scheduled our flow on every month, it won't really get picked up by an agent. For this exercise, create a work-queue from the UI and view it using the CLI. 
@@ -200,7 +207,8 @@ What is the command to view the available work-queues?
 * `prefect work-queue preview`
 * `prefect work-queue list`
 
-
+## Answer: `prefect work-queue ls`
+![Viewing the Work-Queue](./images/Q6.PNG)
 
 ## Submit the results
 

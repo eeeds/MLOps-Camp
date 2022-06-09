@@ -90,5 +90,10 @@ def main(date='2021-08-15'):
     run_model(df_val_processed, categorical, dv, lr)
 
     #Saving the models
+    with open(f'models/dv-{date}.pkl', 'wb') as f:
+        pickle.dump(dv, f)
+    with open(f'models/model.{date}.bin', 'wb') as f:
+        pickle.dump(lr, f)
+
 
 main()
