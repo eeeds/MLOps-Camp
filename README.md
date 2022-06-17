@@ -24,3 +24,10 @@
 * Turning a notebook into a pipeline
 * Deployment of Prefect Flow
 * Homework
+
+### [Module 4: Deployment](4-Deployment)
+* Three ways of model deployment: Online (web and streaming) and offline (batch)
+* Web service: model deployment with Frask
+* Streaming: consuming events with AWS Kinesis and Lambda
+* Batch: scoring data offline
+* Homework
