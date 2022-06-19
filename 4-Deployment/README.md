@@ -29,7 +29,45 @@ pip install -r requirements.txt
 ```
 ## Work on predict.py
 [See code here](web-service/)
+## After you have finished predict.py and test.py, run predict.py on your virtual-enviroment and test.py on whatever you want to test your app.
+```
+(venv) python predict.py
+(base) python test.py
+```
+- To avoid Flask warning, we can install gunicorn:
+```
+pip install gunicorn
+```
+## Run it using gunicorn:
+```
+gunicorn --bind=0.0.0.0:9696 predict:app
+```
+## Install requests on your virtual environment:
+```
+pip install requests
+```
+## Packaging the app to Docker:
+- Create Dockerfile
+- Make the image (make sure about your Python version, you can use python -V to check)
+- Search for the python image in the Docker Hub, I'll select slim version (slim version is used for reducing the size of the image)
+- Build the image with:
+  ```
+  docker build -t ride-duration-prediction-service:v1 . (Add winpty at the beggining to the command if you are using Windows)
+  ```
+  where:
+  -   `ride-duration-prediction-service:v1` is the name of the image
+  - t: v1 is the tag of the image
+  -  `.` is the path to the directory where the Dockerfile is
+- Test it with:
+  ```
+  docker run -it --rm -p 9696:9696  ride-duration-prediction-service:v1 and run the test.py
+  ```
+  where : 
+  -   -it: Interactive mode
+  -   --rm: Remove the container after it is done
+  -   -p: Port mapping
 
+![Result: ](images/docker_test_py.PNG)
 
 ## 4.3 Web-services: Getting the models from the model registry (MLflow)
 
