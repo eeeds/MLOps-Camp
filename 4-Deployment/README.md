@@ -70,13 +70,16 @@ pip install requests
 ![Result: ](images/docker_test_py.PNG)
 
 ## 4.3 Web-services: Getting the models from the model registry (MLflow)
+### For this part, you'll need a S3 bucket.
+I've just created a bucket called `mlflow-models-esteban`.
+## Starting the MLflow server with S3:
+```
+mlflow server --backend-store-uri=sqlite:///mlflow.db --default-artifact-root=s3://mlflow-models-esteban/
+```
+## Run random-forest.ipynb
+[Random Forest model](web-service/random-forest.ipynb)
 
-<a href="https://www.youtube.com/watch?v=aewOpHSCkqI&list=PL3MmuxUbc_hIUISrluw_A7wDSmfOhErJK">
-  <img src="images/thumbnail-4-03.jpg">
-</a>
-
-
-[See code here](web-service-mlflow/)
+[See content here](web-service-mlflow/)
 
 
 ## 4.4 (Optional) Streaming: Deploying models with Kinesis and Lambda 
