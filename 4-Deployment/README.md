@@ -87,6 +87,28 @@ mlflow server --backend-store-uri=sqlite:///mlflow.db --default-artifact-root=s3
 
 ![All working](images/web-service-mflow-working.PNG)
 
+## You can parameterize your RUN_ID an extract it from os.environ:
+
+```
+export MLFLOW_TRACKING_URI="http://127.0.0.1:5000"
+export MODEL_RUN_ID="6dd459b11b4e48dc862f4e1019d166f6"
+
+```
+And add it to the predict.py file:
+
+```
+import os
+RUN_ID = os.getenv('RUN_ID')
+```
+
+
+## For download artifact, you can use the following code:
+```
+mlflow artifacts download \
+    --run-id ${MODEL_RUN_ID} \
+    --artifact-path model \
+    --dst-path .
+```
 
 
 
@@ -103,10 +125,16 @@ mlflow server --backend-store-uri=sqlite:///mlflow.db --default-artifact-root=s3
 
 
 ## 4.5 Batch: Preparing a scoring script
+Copy random-forest.ipynb from web-service-mlflow folder into batch folder.
+```
+cp ../web-service-mlflow/random-forest.ipynb score.ipynb
+```
 
-<a href="https://www.youtube.com/watch?v=18Lbaaeigek&list=PL3MmuxUbc_hIUISrluw_A7wDSmfOhErJK">
-  <img src="images/thumbnail-4-05.jpg">
-</a>
+Access to mlflow to see the model id:
+```
+mlflow server --backend-store-uri=sqlite:///mlflow.db --default-artifact-root=s3://mlflow-models-esteban/
+```
+
 
 
 [See code here](batch/)
