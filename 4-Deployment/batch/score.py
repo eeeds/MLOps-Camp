@@ -58,12 +58,13 @@ def load_model(run_id):
 
 
 def apply_model(input_file, run_id, output_file):
-
+    print(f'Reading the data from  {input_file}')
     df = read_dataframe(input_file)
     dicts = prepare_dictionaries(df)
 
-    
+    print(f'Loading the model with RUN_iD={run_id}')
     model = load_model(run_id)
+    print(f'Applying the model')
     y_pred = model.predict(dicts)
 
     df_result = pd.DataFrame()
@@ -75,7 +76,7 @@ def apply_model(input_file, run_id, output_file):
     df_result['predicted_duration'] = y_pred
     df_result['diff'] = df_result['actual_duration'] - df_result['predicted_duration']
     df_result['model_version'] = run_id
-    
+    print(f'Saving the results to {output_file}')
     df_result.to_parquet(output_file, index=False)
 
 
