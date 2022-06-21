@@ -135,6 +135,16 @@ Access to mlflow to see the model id:
 mlflow server --backend-store-uri=sqlite:///mlflow.db --default-artifact-root=s3://mlflow-models-esteban/
 ```
 
+## After finished the notebook, you can convert it to a script:
+```
+jupyter nbconvert --to script score.ipynb
+```
+
+## Parametrize the script and run it:
+```
+python score.py green 2021 3 133f7f2c17384132b4d4f76682ab6139
+```
+
 
 
 [See code here](batch/)
