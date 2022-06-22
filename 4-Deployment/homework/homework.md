@@ -72,8 +72,10 @@ dtypes of the columns and use pyarrow, not fastparquet.
 Now let's turn the notebook into a script. 
 
 Which command you need to execute for that?
-
-
+## Answer:
+```
+jupyter nbconvert --to script starter.ipynb
+```
 ## Q4. Virtual environment
 
 Now let's put everything into a virtual environment. We'll use pipenv for that.
