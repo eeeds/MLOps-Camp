@@ -21,9 +21,9 @@ What's the mean predicted duration for this dataset?
 * 26.19
 
 ## Answer: 16.19
-You can see it in [./starter.ipynb](homework/starter.ipynb)
+You can see it in [./starter.ipynb](starter.ipynb)
 
-![Q1](images/Q1.png )
+![Q1](images/Q1.PNG )
 
 
 
@@ -63,7 +63,7 @@ dtypes of the columns and use pyarrow, not fastparquet.
 ## Answer:
 19M
 
-![Q2](images/Q2.png)
+![Q2](images/Q2.PNG)
 
 
 
@@ -114,7 +114,7 @@ Hint: just add a print statement to your script.
 ## Answer: 16.29, it's in:
 [Starter Code Modified](./starter.py)
 
-![Q5](images/Q5.png)
+![Q5](images/Q5.PNG)
 
 ## Q6. Docker contaner 
 
