@@ -111,6 +111,10 @@ What's the mean predicted duration?
 
 Hint: just add a print statement to your script.
 
+## Answer: 16.29, it's in:
+[Starter Code Modified](./starter.py)
+
+![Q5](images/Q5.png)
 
 ## Q6. Docker contaner 
 
@@ -154,6 +158,21 @@ for April 2021?
 * 25.96
 * 36.55
 
+## Process: First build your docker image
+[Dockerfile](./Dockerfile)
+
+## Run the following command to build the image:
+```
+winpty docker build -t q6:v1 .
+```
+## Run the following command to run the image:
+```
+winpty docker run -it --rm q6:v1 2021 04
+```
+
+## Answer: 9.96
+
+![Q6](images/Q6.PNG)
 
 ## Bonus: upload the result to the cloud (Not graded)
 
