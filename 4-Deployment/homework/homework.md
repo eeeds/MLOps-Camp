@@ -80,7 +80,8 @@ jupyter nbconvert --to script starter.ipynb
 
 Now let's put everything into a virtual environment. We'll use pipenv for that.
 
-Install all the required libraries. Pay attention to the Scikit-Learn version:
+Install all the required libraries. Pay attention to the Scikit-Learn version (scikit-learn==1.0.2
+):
 check the starter notebook for details. 
 
 After installing the libraries, pipenv creates two files: `Pipfile`
@@ -89,6 +90,10 @@ dependencies we use for the virtual env.
 
 What's the first hash for the Scikit-Learn dependency?
 
+## Answer:
+```
+"sha256:08ef968f6b72033c16c479c966bf37ccd49b06ea91b765e1cc27afefe723920b"
+```
 
 ## Q5. Parametrize the script
 
