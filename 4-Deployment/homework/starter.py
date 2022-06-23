@@ -39,7 +39,7 @@ def run():
     # write the ride id and the predictions to a dataframe with results
     df_result = pd.DataFrame({'ride_id': df.ride_id, 'prediction': y_pred})
 
-    ## Save results into a parquet file
+    # Saving the results of the model into a parquet file.
     df_result.to_parquet(
         'output_file',
         engine='pyarrow',

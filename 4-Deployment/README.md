@@ -116,10 +116,31 @@ mlflow artifacts download \
 
 ## 4.4 (Optional) Streaming: Deploying models with Kinesis and Lambda 
 
-<a href="https://www.youtube.com/watch?v=TCqr9HNcrsI&list=PL3MmuxUbc_hIUISrluw_A7wDSmfOhErJK">
-  <img src="images/thumbnail-4-04.jpg">
-</a>
+## Follow the tutorial that I've provided in [Tutorial: Using Amazon Lambda with Amazon Kinesis](https://docs.amazonaws.cn/en_us/lambda/latest/dg/with-kinesis-example.html)
+- Create your IAM role and policy. Name it `lambda-kinesis-role`
+- Then go to Lambda and create a new function.
+  - Name it `ride-duration-prediction-test`
+  - Set Runtime to Python 3.9
+  - Use a existing role: `lambda-kinesis-role`
 
+## Create a new function as a :
+```
+import json
+
+def lambda_handler(event, context):
+    print(json.dumps(event))
+    return {
+        'statusCode': 200,
+        'body': json.dumps('Hello from Lambda!')
+    }
+```
+
+## To test it:
+- Click in deploy
+- Click in test 
+  - Set the name of the test to `test`
+  - Save it and then click in test 
+- You should see the test result in the console
 
 [See code here](streaming/)
 

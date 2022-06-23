@@ -9,7 +9,7 @@ You'll find the starter code in the [homework](./) directory.
 
 We'll start with the same notebook we ended up with in homework 1.
 
-We cleaned it a little bit and kept only the scoring part. Now it's in [./starter.ipynb](homework/starter.ipynb).
+We cleaned it a little bit and kept only the scoring part. Now it's in [./starter.ipynb](starter.ipynb).
 
 Run this notebook for the February 2021 FVH data.
 
