@@ -141,6 +141,64 @@ def lambda_handler(event, context):
   - Set the name of the test to `test`
   - Save it and then click in test 
 - You should see the test result in the console
+## Now we can test another function:
+```
+import json
+
+def prepare_features(ride):
+    features = {}
+    features['PU_DO'] = '%s_%s' % (ride['PULocationID'], ride['DOLocationID'])
+    features['trip_distance'] = ride['trip_distance']
+    return features
+    
+def predict(features):
+    return 10.0
+
+def lambda_handler(event, context):
+    ride = event['ride']
+    ride_id = event['ride_id']
+    
+    features = prepare_features(ride)
+    prediction = predict(features)
+    
+    #print(json.dumps(event))
+    return {
+        'ride_duration': prediction,
+        'ride_id': id
+    }
+```
+## With the new function, we can test it with:
+```
+{
+    "ride": {
+        "PULocationID": 130,
+        "DOLocationID": 205,
+        "trip_distance": 3.66
+    }, 
+    "ride_id": 123
+}
+```
+## Now we are going to connect our function with Kinesis.
+## Create a new Kinesis stream:
+- Name it `ride_events`
+- In capacity mode select `Provisioned`
+- Only one shard 
+
+## Now go to lambda and add a trigger:
+- Select `Kinesis`
+- Select `ride_events`
+
+## You should see the trigger in the list of triggers:
+[Lambda-Kinesis](images/lambda-kinesis.PNG)
+
+## Execute this code in the console:
+```
+KINESIS_STREAM_INPUT=ride_events
+aws kinesis put-record \
+    --stream-name ${KINESIS_STREAM_INPUT} \
+    --partition-key 1 \
+    --data "Hello, this is a test."
+```
 
 [See code here](streaming/)
 
