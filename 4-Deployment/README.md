@@ -229,9 +229,9 @@ python score.py green 2021 3 133f7f2c17384132b4d4f76682ab6139
 [See code here](batch/)
 
 
-## 4.6 Batch: TBA
+## 4.6 Batch: Scheduling batch scoring jobs with Prefect
 
-COMING SOON
+- Make sure that you have already installed pandas, scikit-learn, mlflow, etc.
 
 
 
