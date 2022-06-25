@@ -320,6 +320,10 @@ prefect agent start 096c894e-a77a-4cb3-917b-ffb5b72ebb11
 - Remember, if you want the model run, you need to start the agent and the agent will start the deployment.
 
 ## We can backfill our model, now we'll create a new script called [Score Backfill](batch/score_backfill.py)
+## Run it:
+```
+python score_backfill.py
+```
 ## 4.7 Homework
 
 COMING SOON
