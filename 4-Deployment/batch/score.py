@@ -5,10 +5,11 @@ import uuid
 import pickle
 import sys 
 
+from datetime import datetime 
 import pandas as pd
 
 
-
+from dateutil.relativedelta import relativedelta
 
 import mlflow
 
@@ -20,9 +21,28 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_squared_error
 from sklearn.pipeline import make_pipeline
 
+@flow
+def ride_duration_prediction(
+    taxi_type: str,
+    run_id:str,
+    run_date: datetime=None):
+
+    if run_date is None:
+        ctx = get_run_context()
+        date = ctx.flow_run_expected_start_time
+
+    prev_month = run_date - relativedelta(months=1)
+    year = prev_month.year
+    month = prev_month.month
+
+    input_file = f'https://s3.amazonaws.com/nyc-tlc/trip+data/{taxi_type}_tripdata_{year:04d}-{month:02d}.parquet'
+    output_file = f'output/{taxi_type}/{year:04d}-{month:02d}.parquet'
 
 
-
+    apply_model(
+        input_file=input_file,
+        run_id=run_id, 
+        output_file=output_file)
 
 def generate_uuids(n):
     ride_ids = []
@@ -91,15 +111,14 @@ def run():
     year = int(sys.argv[2]) #2021
     month = int(sys.argv[3]) # 3
     RUN_ID = sys.argv[4] # '133f7f2c17384132b4d4f76682ab6139'
-    input_file = f'https://s3.amazonaws.com/nyc-tlc/trip+data/{taxi_type}_tripdata_{year:04d}-{month:02d}.parquet'
-    output_file = f'output/{taxi_type}/{year:04d}-{month:02d}.parquet'
+    
 
     #RUN_ID = os.getenv('RUN_ID', 'e1efc53e9bd149078b0c12aeaa6365df')
-    
-    apply_model(
-        input_file=input_file,
-        run_id=RUN_ID, 
-        output_file=output_file)
+
+    ride_duration_prediction(
+        taxi_type=taxi_type,
+        run_id=RUN_ID,
+        run_date=datetime(year, month, 1))
 
 
 if __name__ =='__main__':

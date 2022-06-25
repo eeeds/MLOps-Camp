@@ -224,6 +224,8 @@ jupyter nbconvert --to script score.ipynb
 python score.py green 2021 3 133f7f2c17384132b4d4f76682ab6139
 ```
 
+## You'll see something like this
+![Result: ](images/batch-scheduling.PNG)
 
 
 [See code here](batch/)
@@ -233,6 +235,31 @@ python score.py green 2021 3 133f7f2c17384132b4d4f76682ab6139
 
 - Make sure that you have already installed pandas, scikit-learn, mlflow, etc.
 
+### Add this flow to the score.py code:
+```
+@flow
+def ride_duration_prediction(
+    taxi_type: str,
+    run_id:str,
+    run_date: datetime=None):
+
+    if run_date is None:
+        ctx = get_run_context()
+        date = ctx.flow_run_expected_start_time
+
+    prev_month = run_date - relativedelta(months=1)
+    year = prev_month.year
+    month = prev_month.month
+
+    input_file = f'https://s3.amazonaws.com/nyc-tlc/trip+data/{taxi_type}_tripdata_{year:04d}-{month:02d}.parquet'
+    output_file = f'output/{taxi_type}/{year:04d}-{month:02d}.parquet'
+
+
+    apply_model(
+        input_file=input_file,
+        run_id=run_id, 
+        output_file=output_file)
+```
 
 
 ## 4.7 Homework
