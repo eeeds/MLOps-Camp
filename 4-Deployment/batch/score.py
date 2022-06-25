@@ -13,7 +13,7 @@ from dateutil.relativedelta import relativedelta
 
 import mlflow
 
-from prefect import task, flow
+from prefect import task, flow, get_run_logger
 
 
 from sklearn.feature_extraction import DictVectorizer
@@ -31,14 +31,7 @@ def ride_duration_prediction(
         ctx = get_run_context()
         date = ctx.flow_run_expected_start_time
 
-    prev_month = run_date - relativedelta(months=1)
-    year = prev_month.year
-    month = prev_month.month
-
-    input_file = f'https://s3.amazonaws.com/nyc-tlc/trip+data/{taxi_type}_tripdata_{year:04d}-{month:02d}.parquet'
-    output_file = f'output/{taxi_type}/{year:04d}-{month:02d}.parquet'
-
-
+    input_file, output_file = get_paths(run_date, taxi_type, run_id)
     apply_model(
         input_file=input_file,
         run_id=run_id, 
@@ -82,16 +75,7 @@ def load_model(run_id):
     return model
 
 
-def apply_model(input_file, run_id, output_file):
-    print(f'Reading the data from  {input_file}')
-    df = read_dataframe(input_file)
-    dicts = prepare_dictionaries(df)
-
-    print(f'Loading the model with RUN_iD={run_id}')
-    model = load_model(run_id)
-    print(f'Applying the model')
-    y_pred = model.predict(dicts)
-
+def save_results(df, y_pred, run_id, output_file):
     df_result = pd.DataFrame()
     df_result['ride_id'] = df['ride_id']
     df_result['lpep_pickup_datetime'] = df['lpep_pickup_datetime']
@@ -104,8 +88,31 @@ def apply_model(input_file, run_id, output_file):
     print(f'Saving the results to {output_file}')
     df_result.to_parquet(output_file, index=False)
 
+def get_paths(run_date, taxi_type, run_id):
+    prev_month = run_date - relativedelta(months=1)
+    year = prev_month.year
+    month = prev_month.month 
 
+    input_file = f's3://nyc-tlc/trip data/{taxi_type}_tripdata_{year:04d}-{month:02d}.parquet'
+    output_file = f's3://mlflow-models-esteban/taxi_type={taxi_type}/year={year:04d}/month={month:02d}/{run_id}.parquet'
 
+    return input_file, output_file
+
+@task
+def apply_model(input_file, run_id, output_file):
+    logger = get_run_logger()
+    logger.info(f'Reading the data from  {input_file}')
+    df = read_dataframe(input_file)
+    dicts = prepare_dictionaries(df)
+
+    logger.info(f'Loading the model with RUN_iD={run_id}')
+    model = load_model(run_id)
+    logger.info(f'Applying the model')
+    y_pred = model.predict(dicts)
+    logger.info(f'Saving the results to {output_file}')
+    save_results(df, y_pred, run_id, output_file)
+
+    return output_file
 def run():
     taxi_type = sys.argv[1] #green
     year = int(sys.argv[2]) #2021

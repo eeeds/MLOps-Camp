@@ -224,11 +224,6 @@ jupyter nbconvert --to script score.ipynb
 python score.py green 2021 3 133f7f2c17384132b4d4f76682ab6139
 ```
 
-## You'll see something like this
-![Result: ](images/batch-scheduling.PNG)
-
-
-[See code here](batch/)
 
 
 ## 4.6 Batch: Scheduling batch scoring jobs with Prefect
@@ -260,8 +255,71 @@ def ride_duration_prediction(
         run_id=run_id, 
         output_file=output_file)
 ```
+## You'll see something like this
+![Result: ](images/batch-scheduling.PNG)
+
+## Run the following code to start prefect:
+```
+prefect orion start
+```
+
+## Install  s3fs to access S3:
+```
+pip install s3fs
+```
+## Change the output folder to your S3 bucket:
+```
+OUTPUT_FOLDER=s3://mlflow-models-esteban/
+```
+## Make changes to the code to fit your needs:
+[See code here](batch/score.py)
+
+## Deploy de model:
+- Create score_deploy.py file
+- Add the following code:
+```
+from prefect.deployments import DeploymentSpec
+from prefect.orion.schemas.schedules import CronSchedule
+from prefect.flow_runners import SubprocessFlowRunner
 
 
+DeploymentSpec(
+    flow_location="score.py",
+    name="ride_duration_prediction",
+    parameters={
+        "taxi_type": "green",
+        "run_id": "e1efc53e9bd149078b0c12aeaa6365df",
+    },
+    flow_storage="fb2163c7-c9ac-448b-b225-0fe9a9ae197a",
+    schedule=CronSchedule(cron="0 3 2 * *"),
+    flow_runner=SubprocessFlowRunner(),
+    tags=["ml"]
+)
+```
+## We've already a storage for the model, so we don't need to create it again, but we have to locate the storage, do it with:
+```
+prefect storage ls 
+```
+## You should see the storage, copy the id and paste it in [Score Deploy Code](batch/score_deploy.py)
+
+## Deploy the model with the following command:
+```
+prefect deployment create score_deploy.py
+```
+## You should see the deployment in the list of deployments:
+```
+prefect deployment inspect 'ride-duration-prediction/ride_duration_prediction'
+```
+
+## Now we can test our deployment, we have to create a new work queue, we can do it on the UI
+
+## Then, we can test it with the agent:
+```
+prefect agent start 096c894e-a77a-4cb3-917b-ffb5b72ebb11
+```
+- Remember, if you want the model run, you need to start the agent and the agent will start the deployment.
+
+## We can backfill our model, now we'll create a new script called [Score Backfill](batch/score_backfill.py)
 ## 4.7 Homework
 
 COMING SOON
