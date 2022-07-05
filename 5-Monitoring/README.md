@@ -13,6 +13,13 @@
 ### Working on prediction_service folder
 1. Install all the libraries with `pip install -r requirements.txt`
 2. Setting constants for the model (MODEL_FILE, MONGODB_ADDRESS, EVIDENTLY_SERVICE_ADDRESS)
+3. Working on `app.py` file
+4. Run `docker-compose up --build`
+5. Test the app with `test.py`
+6. You should see the app running on localhost:5000
+
+![App working](images/monitoring-working.PNG)
+
 
 ## 5.2 Setting up the environment
 
