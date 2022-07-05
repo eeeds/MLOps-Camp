@@ -31,3 +31,10 @@
 * Streaming: consuming events with AWS Kinesis and Lambda
 * Batch: scoring data offline
 * Homework
+
+### [Module 5: Model Monitoring](5-Monitoring)
+
+* Monitoring ML-based services
+* Monitoring web services with Prometheus, Evidently, and Grafana
+* Monitoring batch jobs with Prefect, MongoDB, and Evidently
+* Homework

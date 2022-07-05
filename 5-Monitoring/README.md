@@ -1,7 +1,18 @@
 # 5. Model Monitoring
 
-## 5.1 Monitoring for ML-based services
 
+
+## 5.1 Monitoring for ML-based services
+1. Add ML metrics to service health monitoring (Prometheus/Grafana)
+2. Build an ML focused Dashboard(s) (MongoDB/Grafana or BI tools Tableu, Looker)
+
+![Monitoring](images/monitoring.PNG)
+
+-   You can add batch monitoring to this system
+
+### Working on prediction_service folder
+1. Install all the libraries with `pip install -r requirements.txt`
+2. Setting constants for the model (MODEL_FILE, MONGODB_ADDRESS, EVIDENTLY_SERVICE_ADDRESS)
 
 ## 5.2 Setting up the environment
 
