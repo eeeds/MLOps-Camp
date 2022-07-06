@@ -16,19 +16,29 @@
 3. Working on `app.py` file
 4. Run `docker-compose up --build`
 5. Test the app with `test.py`
+    ```
+    python3 test.py
+    ```
 6. You should see the app running on localhost:5000
 
 ![App working](images/monitoring-working.PNG)
 
 
 ## 5.2 Setting up the environment
+1. Create a conda enviroment:
+  ```
+    conda create -n mlops5 python=3.8
+  ```
+2. Activate the conda enviroment:
+  ```
+    conda activate mlops5
+  ```
+3. Install all the libraries with `pip install -r requirements.txt` (monitoring folder)
 
+4. [Create prepare.py Script](prepare.py)
 
+5. [Create Dockerfile](docker-compose.yml)
 ## 5.3 Creating a prediction service and simulating traffic
-
-<a href="https://www.youtube.com/watch?v=umQ3Mo5G1o8&list=PL3MmuxUbc_hIUISrluw_A7wDSmfOhErJK">
-  <img src="images/thumbnail-5-03.jpg">
-</a>
 
 
 
