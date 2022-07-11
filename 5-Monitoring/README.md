@@ -40,6 +40,11 @@
 5. [Create Dockerfile](docker-compose.yml)
 ## 5.3 Creating a prediction service and simulating traffic
 - Following the video
+- Working on [send_data.py](send_data.py)
+- Open your conda enviroment (make sure that you container is running)
+- Run `python send_data.py`
+- Create `pymongo_example.ipynb` to see the data in your mongo db.
+- You can check it: [pymongo_example.ipynb](pymongo_example.ipynb)
 
 
 ## 5.4 Realtime monitoring walktrough (Prometheus, Evidently, Grafana)
