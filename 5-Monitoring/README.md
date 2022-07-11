@@ -39,22 +39,14 @@
 
 5. [Create Dockerfile](docker-compose.yml)
 ## 5.3 Creating a prediction service and simulating traffic
-
+- Following the video
 
 
 ## 5.4 Realtime monitoring walktrough (Prometheus, Evidently, Grafana)
 
-<a href="https://www.youtube.com/watch?v=r_m4VFEJ8yY&list=PL3MmuxUbc_hIUISrluw_A7wDSmfOhErJK">
-  <img src="images/thumbnail-5-04.jpg">
-</a>
-
 
 
 ## 5.5 Batch monitoring walktrough (Prefect, MongoDB, Evidently)
-
-<a href="https://www.youtube.com/watch?v=KefdYuue_FE&list=PL3MmuxUbc_hIUISrluw_A7wDSmfOhErJK">
-  <img src="images/thumbnail-5-05.jpg">
-</a>
 
 
 
