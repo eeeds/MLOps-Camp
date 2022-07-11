@@ -48,7 +48,8 @@
 
 
 ## 5.4 Realtime monitoring walktrough (Prometheus, Evidently, Grafana)
-
+- Following the video
+- Working on [monitoring/evidently_service](evidently_service)
 
 
 ## 5.5 Batch monitoring walktrough (Prefect, MongoDB, Evidently)
