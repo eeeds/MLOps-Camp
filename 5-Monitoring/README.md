@@ -53,7 +53,12 @@
 
 
 ## 5.5 Batch monitoring walktrough (Prefect, MongoDB, Evidently)
-
+- Following the video
+- Working on [prefect_example.py](prefect_example.py)
+- Open your conda enviroment (make sure that you container is running)
+- Run `python prefect_example.py`
+- Run `prefect orion start` to see the the task in the Orion UI
+- See the data with the jupyter notebook that we were created before, [pymongo_example.ipynb](pymongo_example.ipynb)
 
 
 ## 5.6 Homework
