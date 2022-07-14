@@ -38,3 +38,11 @@
 * Monitoring web services with Prometheus, Evidently, and Grafana
 * Monitoring batch jobs with Prefect, MongoDB, and Evidently
 * Homework
+### [Module 6: Best Practices](6-Best-Practices)
+
+* Testing: unit, integration
+* Python: linting and formatting
+* Pre-commit hooks and makefiles
+* CI/CD (Github Actions)
+* Infrastructure as code (Terraform)
+* Homework
