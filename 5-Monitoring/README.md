@@ -59,11 +59,12 @@
 - Run `python prefect_example.py`
 - Run `prefect orion start` to see the the task in the Orion UI
 - See the data with the jupyter notebook that we were created before, [pymongo_example.ipynb](pymongo_example.ipynb)
+- See the html report that evidently had created.
 
 
 ## 5.6 Homework
 
-COMING SOON
+No HW for this week.
 
 
 
