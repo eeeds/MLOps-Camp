@@ -31,7 +31,23 @@ Add a `__init__.py` file to the folder `tests` to make it a python package.
 
 Working on `model_test.py` file.
 
+Following the video, making changes to the `lambda_function.py` file and `model.py` file.
 
+Build the docker image with:
+```
+docker build -t stream-model-duration:v2 .
+```
+Test it with:
+```
+docker run -it --rm \
+    -p 8080:8080 \
+    -e PREDICTIONS_STREAM_NAME="ride_predictions" \
+    -e RUN_ID="e1efc53e9bd149078b0c12aeaa6365df" \
+    -e TEST_RUN="True" \
+    -e AWS_DEFAULT_REGION="eu-west-1" \
+    stream-model-duration:v2
+```
+Then, work on the `model_test.py` file again.
 ## 6.2 Integration tests with docker-compose
 
 
