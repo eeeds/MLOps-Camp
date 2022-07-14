@@ -5,7 +5,31 @@ Copy all the files from the folder `4-Deployment/streaming` to the folder `code`
 ```
 cp -r 4-Deployment/streaming 6-Best-Practices/code
 ```
+Create the pipenv enviroment with:
+```
+pipenv install
+```
+In my case I'm using conda:
+```
+conda activate env
+```
+Install pytest (conda)
+```
+pip install pytest
+```
+Install pytest(Pipenv)
+```
+pipenv install --dev pytest
+```
+Select the python interpreter on VS Code that you want to use:
+```
+Ctrl+Shift+P->Type `Python Interpreter`->Select the python interpreter that you want to use
+```
+Go to the extension and select the folder `tests` for the tests.
 
+Add a `__init__.py` file to the folder `tests` to make it a python package.
+
+Working on `model_test.py` file.
 
 
 ## 6.2 Integration tests with docker-compose
