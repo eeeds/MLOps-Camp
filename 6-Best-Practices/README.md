@@ -50,6 +50,10 @@ docker run -it --rm \
 Then, work on the `model_test.py` file again.
 ## 6.2 Integration tests with docker-compose
 
+-   Following the video
+-   Using `Deepdiff` to compare the results of the model with the results of the test.
+-   Install it with `pip install deepdiff`
+
 
 
 ## 6.3 Testing cloud services with LocalStack
