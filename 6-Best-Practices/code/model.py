@@ -12,7 +12,7 @@ def get_model_location(run_id):
     if model_location is not None:
         return model_location
 
-    model_bucket = os.getenv('MODEL_BUCKET', 'mlflow-models-alexey')
+    model_bucket = os.getenv('MODEL_BUCKET', 'mlflow-models-esteban')
     experiment_id = os.getenv('MLFLOW_EXPERIMENT_ID', '1')
 
     model_location = f's3://{model_bucket}/{experiment_id}/{run_id}/artifacts/model'

@@ -42,7 +42,7 @@ Test it with:
 docker run -it --rm \
     -p 8080:8080 \
     -e PREDICTIONS_STREAM_NAME="ride_predictions" \
-    -e RUN_ID="e1efc53e9bd149078b0c12aeaa6365df" \
+    -e RUN_ID="133f7f2c17384132b4d4f76682ab6139" \
     -e TEST_RUN="True" \
     -e AWS_DEFAULT_REGION="eu-west-1" \
     stream-model-duration:v2
@@ -57,9 +57,24 @@ Then, work on the `model_test.py` file again.
 -   Build the docker image with:
     ```
     docker build -t stream-model-duration:v2 .
+    ``` (because we have installed deepdiff)
+
+- Re run the test with:
     ```
-
-
+    docker run -it --rm \
+        -p 8080:8080 \
+        -e PREDICTIONS_STREAM_NAME="ride_predictions" \
+        -e RUN_ID="133f7f2c17384132b4d4f76682ab6139" \
+        -e TEST_RUN="True" \
+        -e AWS_DEFAULT_REGION="eu-west-1" \
+        stream-model-duration:v2
+    ```
+-   Compare the results of the model with the results of the test running `test_docker.py` file.
+-   Create [integration-test folder](code/integration-test) and move the `test_docker.py` file to it.
+-   Download the model from ` aws s3 ls s3://mlflow-models-esteban/1/133f7f2c17384132b4d4f76682ab6139/artifacts/model ` with the following command:
+    ```
+    aws s3 cp --recursive s3://mlflow-models-esteban/1/133f7f2c17384132b4d4f76682ab6139/artifacts/model model
+    ```
 
 ## 6.3 Testing cloud services with LocalStack
 
