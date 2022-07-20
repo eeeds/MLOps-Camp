@@ -83,8 +83,22 @@ Then, work on the `model_test.py` file again.
 ## 6.3 Testing cloud services with LocalStack
 -   Following the video
 -   Install localstack with `pip install localstack`
+-   Run `docker-compose up kinesis` to start the localstack.
+-   Test it with `aws --endpoint-url=http://localhost:4566 kinesis list-streams`, the result should be `[]` because we haven't created any stream.
+-   Create a stream with `aws --endpoint-url=http://localhost:4566 kinesis create-stream --stream-name ride_predictions --shard-count 1`
 
+-   Obtain the shard-iterator with:
+    ```aws  --endpoint-url=http://localhost:4566 \
+    kinesis get-shard-iterator \
+    --shard-id shardId-000000000000 \
+    --shard-iterator-type TRIM_HORIZON \
+    --stream-name ride_predictions \
+    --query 'ShardIterator'
+    ```
+-   Copy the Shard Iterator and then get Results with `aws --endpoint-url=http://localhost:4566 kinesis get-records --shard-iterator AAAAAAAAAAEKI4NpH/+OBt9nuDiWveLMU3AC04xCuNo+FAd4A8AG0xie44BvI515xlgURUqDa4yQNbbebn/Mh43NjDCW6tJ8aD87X9PTooaZWjpWklDFXATaLHKT3f+lZSyrsNC8dkb7sS/uLQHyb5OrMKM8YS7kj+LqrX93tZ3hRRaiTavCLF2HYvDA5opnP8sM3/y/dciH2NWrE4PrT4YHoJXSoknd `
 
+-   Echo the Data value as follows `echo $DATA | base64 -d`
+-   Create `test_kinesis.py` file to test the stream.
 ## 6.4 Code quality: linting and formatting
 
 
