@@ -75,6 +75,10 @@ Then, work on the `model_test.py` file again.
     ```
     aws s3 cp --recursive s3://mlflow-models-esteban/1/133f7f2c17384132b4d4f76682ab6139/artifacts/model model
     ```
+-   Crete `run.sh` file 
+-   Create `docker-compose.yml` file and move it to the `integration-test` folder.
+-   Run `docker build -t ${LOCAL_IMAGE_NAME} ..` to build the docker image.
+-   Run `docker-compose up -d` to start the docker-compose.
 
 ## 6.3 Testing cloud services with LocalStack
 
