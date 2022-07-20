@@ -81,7 +81,8 @@ Then, work on the `model_test.py` file again.
 -   Run `docker-compose up -d` to start the docker-compose.
 
 ## 6.3 Testing cloud services with LocalStack
-
+-   Following the video
+-   Install localstack with `pip install localstack`
 
 
 ## 6.4 Code quality: linting and formatting
