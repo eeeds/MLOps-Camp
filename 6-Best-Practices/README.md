@@ -53,6 +53,11 @@ Then, work on the `model_test.py` file again.
 -   Following the video
 -   Using `Deepdiff` to compare the results of the model with the results of the test.
 -   Install it with `pip install deepdiff`
+-   Working on `model_test.py` file and `test_docker.py` files.
+-   Build the docker image with:
+    ```
+    docker build -t stream-model-duration:v2 .
+    ```
 
 
 
