@@ -1,5 +1,4 @@
 import os
-
 import code.model as model
 
 PREDICTIONS_STREAM_NAME = os.getenv('PREDICTIONS_STREAM_NAME', 'ride_predictions')

@@ -44,25 +44,26 @@ class ModelService:
     """
     This class is used to predict the ride duration.
     """
+
     def __init__(self, model, model_version=None, callbacks=None):
         self.model = model
         self.model_version = model_version
         self.callbacks = callbacks or []
 
     def prepare_features(self, ride):
-        #pylint: disable=missing-function-docstring
+        # pylint: disable=missing-function-docstring
         features = {}
         features['PU_DO'] = f"{ride['PULocationID']}_{ride['DOLocationID']}"
         features['trip_distance'] = ride['trip_distance']
         return features
 
     def predict(self, features):
-        #pylint: disable=missing-function-docstring
+        # pylint: disable=missing-function-docstring
         pred = self.model.predict(features)
         return float(pred[0])
 
     def lambda_handler(self, event):
-        #pylint: disable=missing-function-docstring
+        # pylint: disable=missing-function-docstring
         # print(json.dumps(event))
 
         predictions_events = []
@@ -93,13 +94,13 @@ class ModelService:
 
 
 class KinesisCallback:
-    #pylint: disable=missing-class-docstring
+    # pylint: disable=missing-class-docstring
     def __init__(self, kinesis_client, prediction_stream_name):
         self.kinesis_client = kinesis_client
         self.prediction_stream_name = prediction_stream_name
 
     def put_record(self, prediction_event):
-        #pylint: disable=missing-function-docstring
+        # pylint: disable=missing-function-docstring
         ride_id = prediction_event['prediction']['ride_id']
 
         self.kinesis_client.put_record(
@@ -110,7 +111,7 @@ class KinesisCallback:
 
 
 def create_kinesis_client():
-    #pylint: disable=missing-function-docstring
+    # pylint: disable=missing-function-docstring
     endpoint_url = os.getenv('KINESIS_ENDPOINT_URL')
 
     if endpoint_url is None:
@@ -120,7 +121,7 @@ def create_kinesis_client():
 
 
 def init(prediction_stream_name: str, run_id: str, test_run: bool):
-    #pylint: disable=missing-function-docstring
+    # pylint: disable=missing-function-docstring
     model = load_model(run_id)
 
     callbacks = []
