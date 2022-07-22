@@ -100,7 +100,9 @@ Then, work on the `model_test.py` file again.
 -   Echo the Data value as follows `echo $DATA | base64 -d`
 -   Create `test_kinesis.py` file to test the stream.
 ## 6.4 Code quality: linting and formatting
-
+-   Following the video
+-   Install `Pylint` with `pip install pylint`
+-   Test a file with `pylint filename`
 
 
 
