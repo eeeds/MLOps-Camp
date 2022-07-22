@@ -131,13 +131,13 @@ We're gonna use the `pre-commit` tool to run the linter and the tests.
     ```
     pre-commit installed at .git\hooks\pre-commit
     ```
-
-
-
-
+-   Type `git commit -m "message"` to commit the changes.
 
 ## 6.6 Makefiles and make
-
+-   Following the video
+-   Install `make` with `pip install make`. Make is a tool for building software. It can build software from source code, and it can also build software from binary packages.
+-   Create a `Makefile` file in the `code` folder.
+-   Run `make` to build the code.
 
 
 ## 6.X Homework
