@@ -103,6 +103,8 @@ Then, work on the `model_test.py` file again.
 -   Following the video
 -   Install `Pylint` with `pip install pylint`
 -   Test a file with `pylint filename`
+-   You can test all the files in the folder with `pylint --recursive=y .`
+-   Use it in VSCode with `Ctrl+Shift+P->Python: Select Linter`->`Pylint` 
 
 
 
