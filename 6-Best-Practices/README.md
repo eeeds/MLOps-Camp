@@ -123,6 +123,15 @@ Then, work on the `model_test.py` file again.
 
 
 ## 6.5 Git pre-commit hooks
+We're gonna use the `pre-commit` tool to run the linter and the tests.
+-   Following the video
+-   Install `pre-commit` with `pip install pre-commit`
+-   Type `pre-commit sample-config` to see the sample config.
+-   Type `pre-commit install` to install the hooks. It should show you the hooks that are installed:
+    ```
+    pre-commit installed at .git\hooks\pre-commit
+    ```
+
 
 
 
