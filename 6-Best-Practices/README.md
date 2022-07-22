@@ -107,6 +107,15 @@ Then, work on the `model_test.py` file again.
 -   Use it in VSCode with `Ctrl+Shift+P->Python: Select Linter`->`Pylint` 
 -   Now you can see the errors in the code.
 -   You can add the file `.pylintrc` to configure the linter.
+-   We can use pyproject.toml to configure the linter (global settings).
+-   Install `black` with `pip install black`
+    ```
+    Black is the uncompromising Python code formatter. By using it, you agree to cede control over minutiae of hand-formatting. In return, Black gives you speed, determinism, and freedom from pycodestyle nagging about formatting. You will save time and mental energy for more important matters.
+
+    Blackened code looks the same regardless of the project you're reading. Formatting becomes transparent after a while and you can focus on the content instead.
+
+    ```
+-   Install `isort` with `pip install isort`. Isort is a tool for managing Python imports. It can sort imports alphabetically, sort imports by their type, and sort imports by their scope.
 
 
 
