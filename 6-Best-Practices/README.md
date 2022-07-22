@@ -116,6 +116,8 @@ Then, work on the `model_test.py` file again.
 
     ```
 -   Install `isort` with `pip install isort`. Isort is a tool for managing Python imports. It can sort imports alphabetically, sort imports by their type, and sort imports by their scope.
+-   Type `black --diff .`. This option will show you the changes that black would make to the code.
+-   Type `isort --diff .`. This option will show you the changes that isort would make to the code.
 
 
 

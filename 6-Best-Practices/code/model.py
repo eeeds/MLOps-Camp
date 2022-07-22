@@ -43,7 +43,6 @@ def base64_decode(encoded_data):
 class ModelService:
     """
     This class is used to predict the ride duration.
-    
     """
     def __init__(self, model, model_version=None, callbacks=None):
         self.model = model
