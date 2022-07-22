@@ -105,6 +105,8 @@ Then, work on the `model_test.py` file again.
 -   Test a file with `pylint filename`
 -   You can test all the files in the folder with `pylint --recursive=y .`
 -   Use it in VSCode with `Ctrl+Shift+P->Python: Select Linter`->`Pylint` 
+-   Now you can see the errors in the code.
+-   You can add the file `.pylintrc` to configure the linter.
 
 
 
