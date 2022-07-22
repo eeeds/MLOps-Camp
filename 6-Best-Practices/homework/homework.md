@@ -108,6 +108,8 @@ How many rows should be there in the expected dataframe?
 - 3
 - 4
 
+### Answer: 2
+![Answer 2](images/q3.PNG)
 
 ## Q4. Mocking S3 with Localstack 
 

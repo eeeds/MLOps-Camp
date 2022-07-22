@@ -18,7 +18,7 @@ def read_data(filename, categorical):
     df[categorical] = df[categorical].fillna(-1).astype('int').astype('str')
     
     return df
-
+    
 
 def main(year, month):
     input_file = f'https://raw.githubusercontent.com/alexeygrigorev/datasets/master/nyc-tlc/fhv/fhv_tripdata_{year:04d}-{month:02d}.parquet'
