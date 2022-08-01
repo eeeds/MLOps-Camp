@@ -50,7 +50,7 @@ def main(year, month):
     output_file = get_output_path(year, month)
 
 
-    with open('model.bin', 'rb') as f_in:
+    with open('..\model.bin', 'rb') as f_in:
         dv, lr = pickle.load(f_in)
 
     

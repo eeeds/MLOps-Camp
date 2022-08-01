@@ -268,6 +268,8 @@ verify the result is correct.
 
 What's the sum of predicted durations for the test dataframe?
 
+## Answer:
+![Q6](images/q6.PNG)
 
 ## Running the test (ungraded)
 
