@@ -243,7 +243,7 @@ the file. Otherwise the size may be different depending on the OS,
 engine and compression. Even if you use this exact snippet, the size
 of your dataframe may still be a bit off. Just select the closest option.
 
-## Answer:
+## Answer: 3940
 ![Q5](images/q5-2.PNG)
 
 

@@ -21,7 +21,7 @@ def read_data(filename, categorical):
     """
     Read data from parquet file.
     """
-    df = pd.read_parquet('s3://bucket/file.parquet', storage_options=options)
+    df = pd.read_parquet('s3://nyc-duration/test/test.parquet', storage_options=options)
     df['duration'] = df.dropOff_datetime - df.pickup_datetime
     df['duration'] = df.duration.dt.total_seconds() / 60
 
@@ -71,8 +71,11 @@ def main(year, month):
     df_result['ride_id'] = df['ride_id']
     df_result['predicted_duration'] = y_pred
 
-    df_result.to_parquet(output_file, engine='pyarrow', index=False)
+    #df_result.to_parquet(output_file, engine='pyarrow', index=False)
+    save_data(output_file, df_result)
 
+def save_data(filename: str, df: pd.DataFrame) -> None:
+    df.to_parquet(filename, storage_options=options)
     
 if __name__ == '__main__':
     year = int(sys.argv[1])

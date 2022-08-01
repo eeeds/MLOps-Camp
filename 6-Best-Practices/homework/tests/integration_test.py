@@ -1,7 +1,7 @@
 import pandas as pd
 from datetime import datetime
-
-#from batch import main, get_output_path
+import os 
+from batch import main, get_input_path, get_output_path
 
 S3_ENDPOINT_URL = 'http://localhost:4566'
 
@@ -46,22 +46,22 @@ def output_file():
             index=False,
             storage_options=options)
 
-# def test():
-#     main(2021,1)
+def test():
+    main(2021,1)
     
-#     categorical = ['PUlocationID', 'DOlocationID']
-#     input_file = get_output_path(2021,1)
+    categorical = ['PUlocationID', 'DOlocationID']
+    input_file = get_output_path(2021,1)
 
-#     options = {
-#         'client_kwargs': {
-#             'endpoint_url': S3_ENDPOINT_URL
-#         }
-#     }
-#     df_output = pd.read_parquet(input_file, storage_options=options)
+    options = {
+        'client_kwargs': {
+            'endpoint_url': S3_ENDPOINT_URL
+        }
+    }
+    df_output = pd.read_parquet(input_file, storage_options=options)
 
-#     sum_predictions = df_output['predicted_duration'].sum()
+    sum_predictions = df_output['predicted_duration'].sum()
 
-#     assert sum_predictions == 34, f"sum: {sum_predictions}"
+    assert sum_predictions == 34, f"sum: {sum_predictions}"
 
 
 if __name__ == "__main__":
