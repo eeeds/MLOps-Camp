@@ -6,10 +6,22 @@ import pickle
 import pandas as pd
 
 
+INPUT_FILE_PATTERN="s3://nyc-duration/in/{year:04d}-{month:02d}.parquet"
+OUTPUT_FILE_PATTERN="s3://nyc-duration/out/{year:04d}-{month:02d}.parquet"
+S3_ENDPOINT_URL='http://localhost:4566'
+
+options = {
+    'client_kwargs': {
+        'endpoint_url': S3_ENDPOINT_URL
+    }
+}
+
 
 def read_data(filename, categorical):
-    df = pd.read_parquet(filename)
-    
+    """
+    Read data from parquet file.
+    """
+    df = pd.read_parquet('s3://bucket/file.parquet', storage_options=options)
     df['duration'] = df.dropOff_datetime - df.pickup_datetime
     df['duration'] = df.duration.dt.total_seconds() / 60
 
@@ -18,11 +30,24 @@ def read_data(filename, categorical):
     df[categorical] = df[categorical].fillna(-1).astype('int').astype('str')
     
     return df
-    
+
+def get_input_path(year, month):
+    default_input_pattern = 'https://raw.githubusercontent.com/alexeygrigorev/datasets/master/nyc-tlc/fhv/fhv_tripdata_{year:04d}-{month:02d}.parquet'
+    input_pattern = INPUT_FILE_PATTERN
+    return input_pattern.format(year=year, month=month)
+
+
+def get_output_path(year, month):
+    default_output_pattern = 's3://nyc-duration-prediction-alexey/taxi_type=fhv/year={year:04d}/month={month:02d}/predictions.parquet'
+    output_pattern = OUTPUT_FILE_PATTERN
+    return output_pattern.format(year=year, month=month)
 
 def main(year, month):
-    input_file = f'https://raw.githubusercontent.com/alexeygrigorev/datasets/master/nyc-tlc/fhv/fhv_tripdata_{year:04d}-{month:02d}.parquet'
-    output_file = f'output_files/taxi_type=fhv_year={year:04d}_month={month:02d}.parquet'
+    """
+    Main function.
+    """
+    input_file = get_input_path(year, month)
+    output_file = get_output_path(year, month)
 
 
     with open('model.bin', 'rb') as f_in:

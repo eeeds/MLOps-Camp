@@ -136,6 +136,12 @@ Check that the bucket was successfully created. With AWS, this is how we typical
 ```bash
 aws s3 ls
 ```
+## Answer:
+```
+aws s3 --endpoint-url http://localhost:4566 mb s3://nyc-duration
+```
+![Answer 4](images/q4.PNG)] 
+
 
 ## Make input and output paths configurable
 
@@ -223,6 +229,7 @@ df_input.to_parquet(
     storage_options=options
 )
 ```
+![Q5](images/q5-1.PNG)
 
 What's the size of the file?
 
@@ -236,6 +243,8 @@ the file. Otherwise the size may be different depending on the OS,
 engine and compression. Even if you use this exact snippet, the size
 of your dataframe may still be a bit off. Just select the closest option.
 
+## Answer:
+![Q5](images/q5-2.PNG)
 
 
 
