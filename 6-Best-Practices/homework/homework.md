@@ -33,7 +33,7 @@ output_file = f'taxi_type=fhv_year={year:04d}_month={month:02d}.parquet'
 ```
 ### Answer
 It's working as expected. You can see the output as follows:
-![Results](images/q1.png)
+![Results](images/q1.PNG)
 
 ## Q2. Installing pytest
 
