@@ -1,5 +1,5 @@
 numpy
 pandas
 seaborn
-matploltlib
+matplotlib
 sklearn
