@@ -46,3 +46,18 @@
 * CI/CD (Github Actions)
 * Infrastructure as code (Terraform)
 * Homework
+
+### [Project](7-Project/)
+
+* End-to-end project with all the things above
+
+[More details](7-Project/)
+
+
+### Module 7: Processes
+
+* CRISP-DM, CRISP-ML
+* ML Canvas
+* Data Landscape canvas
+* MLOps Stack Canvas
+* Documentation practices in ML projects (Model Cards Toolkit)
