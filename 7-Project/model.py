@@ -9,9 +9,12 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 
 
+import prefect 
+from prefect import task, flow
+
 import mlflow
 
-
+@task(name = 'Extract_Data', retries = 3)
 def extract_data() -> pd.DataFrame:
     """
     Extract data from csv file and return dataframe
@@ -19,7 +22,7 @@ def extract_data() -> pd.DataFrame:
     employee_df = pd.read_csv('datasets/HR-Employee-Attrition.csv')
     return employee_df
 
-
+@task(name ='Transform_data' ,retries = 3)
 def transform_data(employee_df: pd.DataFrame) -> pd.DataFrame:
     """
     Transform dataframe to get features and labels
@@ -55,12 +58,14 @@ def transform_data(employee_df: pd.DataFrame) -> pd.DataFrame:
     y = employee_df['Attrition']
     return X_all, y
 
-
-def applying_model(X_all: pd.DataFrame, y: pd.Series):
+@flow(name = 'Applying ML Model')
+def applying_model():
     """
     Apply model to data
     
     """
+    employee_df = extract_data()
+    X_all, y = transform_data(employee_df)
     with mlflow.start_run():
         X_train, X_test, y_train, y_test = train_test_split(
             X_all, y, test_size=0.25, random_state=0)
@@ -86,7 +91,5 @@ if __name__ == '__main__':
     """
     This is the main function that will be executed when you run this file
     """
-    employee_df = extract_data()
-    X_all, y = transform_data(employee_df)
-    applying_model(X_all, y)
+    applying_model()
     print('Model has been trained and saved')
