@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/User/Desktop/Github/MLOps-Camp/7-Project/mlruns/0/b2b24aa9b6fa4b588f708d820f1059ae/artifacts
+end_time: 1660206987430
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+name: ''
+run_id: b2b24aa9b6fa4b588f708d820f1059ae
+run_uuid: b2b24aa9b6fa4b588f708d820f1059ae
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1660206983444
+status: 3
+tags: []
+user_id: User
