@@ -48,8 +48,6 @@ def transform_data(employee_df: pd.DataFrame) -> pd.DataFrame:
     X_cat = onehot.fit_transform(X_cat).toarray()
     # Convert X_cat to df
     X_cat = pd.DataFrame(X_cat)
-    # Convert X_cat to df
-    X_cat = pd.DataFrame(X_cat)
     # Numerical variables
     X_numerical = employee_df[['Age', 'DailyRate', 'DistanceFromHome',	'Education', 'EnvironmentSatisfaction', 'HourlyRate', 'JobInvolvement',	'JobLevel',	'JobSatisfaction',	'MonthlyIncome',	'MonthlyRate',	'NumCompaniesWorked',	'OverTime',
                                'PercentSalaryHike', 'PerformanceRating',	'RelationshipSatisfaction',	'StockOptionLevel',	'TotalWorkingYears', 'TrainingTimesLastYear', 'WorkLifeBalance',	'YearsAtCompany', 'YearsInCurrentRole', 'YearsSinceLastPromotion',	'YearsWithCurrManager']]
