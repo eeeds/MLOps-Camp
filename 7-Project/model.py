@@ -9,10 +9,14 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 
 
-import prefect 
 from prefect import task, flow
 
 import mlflow
+
+mlflow.set_tracking_uri("sqlite:///mydb.sqlite")
+EXPERIMENT_NAME = "hr-employee-attrition-project"
+
+mlflow.set_experiment(EXPERIMENT_NAME)
 
 @task(name = 'Extract_Data', retries = 3)
 def extract_data() -> pd.DataFrame:
@@ -83,8 +87,14 @@ def applying_model():
 
         mlflow.log_artifact(local_path='models/logreg.pkl',
                             artifact_path='models/logreg')
+        #Model Register
+        mlflow.sklearn.log_model(
+            sk_model = logreg,
+            artifact_path='models/logreg',
+            registered_model_name='sk-learn-logreg-model'
+        )
 
-        mlflow.sklearn.log_model(logreg, 'models/logreg')
+
 
 
 if __name__ == '__main__':
