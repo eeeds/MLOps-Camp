@@ -23,7 +23,7 @@
   - [Start an agent](#start-an-agent)
   - [Schedule the deployment](#schedule-the-deployment)
 - [Monitoring](#monitoring)
-  - [](#)
+  - [Install evidently](#install-evidently)
 
 # Problem Explanation
 
@@ -140,7 +140,8 @@ Now, when you run a deployment with the `-t tag` option, the agent will pick up 
 # Monitoring
 I'm going to use [Evidently](https://evidentlyai.com/) to monitor the experiment.
 
-##  
+## Install evidently
+You can install it with the following command:
 ```
 pip install evidently
 ```

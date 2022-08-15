@@ -1,4 +1,5 @@
 # Import libraries
+from tabnanny import verbose
 import pandas as pd
 import pickle
 
@@ -10,14 +11,45 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 
 
+
+from evidently.dashboard import Dashboard
+from evidently.pipeline.column_mapping import ColumnMapping
+from evidently.dashboard.tabs import ClassificationPerformanceTab
+
+from evidently.model_profile import Profile
+from evidently.model_profile.sections import ClassificationPerformanceProfileSection
+
+
+
 from prefect import task, flow
 
 import mlflow
 
 mlflow.set_tracking_uri("sqlite:///mydb.sqlite")
 EXPERIMENT_NAME = "hr-employee-attrition-project"
-
 mlflow.set_experiment(EXPERIMENT_NAME)
+
+@task(name = 'Model Performance Dashboard', retries=3)
+def model_performance_dashboard(df_train,train_dicts, df_val, val_dicts, numerical_features, categorical_features):
+
+    df_column_mapping = ColumnMapping()
+    df_column_mapping.target = 'target'
+    df_column_mapping.prediction = 'prediction'
+    df_column_mapping.numerical_features = numerical_features
+    df_column_mapping.categorical_features = categorical_features
+    #Prediction for dashboard
+    with open('models/pipeline.bin', 'rb') as f :
+        pipeline = pickle.load(f)
+    df_train['prediction'] = pipeline.predict(train_dicts)
+    df_val['prediction'] = pipeline.predict(val_dicts)
+    df_train.rename(columns={'Attrition': 'target'}, inplace=True)
+    df_val.rename(columns={'Attrition': 'target'}, inplace=True)
+    #Model Performance Dashboard full (verbose_level=1)
+    df_model_performance_dashboard = Dashboard(tabs=[ClassificationPerformanceTab(verbose_level=1)])
+    df_model_performance_dashboard.calculate(df_train, df_val, column_mapping=df_column_mapping)
+    #Save dashboard
+    df_model_performance_dashboard.save('dashboards/df_model_performance.html') 
+
 @task(name = 'Create Pipeline', retries = 3)
 def create_pipeline(train_dicts, y_train):
     """
@@ -56,9 +88,9 @@ def extract_data() -> pd.DataFrame:
     # Delete unnecessary columns
     df.drop(['EmployeeCount', 'EmployeeNumber', 'StandardHours'], axis=1, inplace=True)
     # Changing categorical data to numerical data
-    df['Attrition'] = df['Attrition'].map({'Yes': 1, 'No': 0})
-    df['Over18'] = df['Over18'].map({'Yes':1, 'No':0})
-    df['OverTime'] = df['OverTime'].map({'Yes':1, 'No':0})
+    df['Attrition'] = df['Attrition'].apply(lambda x: 1 if x=='Yes' else 0)
+    df['Over18'] = df['Over18'].apply(lambda x: 1 if x=='Yes' else 0)
+    df['OverTime'] = df['OverTime'].apply(lambda x: 1 if x=='Yes' else 0)
 
     return df
 
@@ -78,7 +110,7 @@ def transform_data(df: pd.DataFrame):
     #Categorical data 
     categorical = ['BusinessTravel', 'Department', 'EducationField', 'Gender', 'JobRole', 'MaritalStatus']
     #Numerical data
-    numerical = ['Age', 'DailyRate', 'DistanceFromHome',	'Education', 'EnvironmentSatisfaction', 'HourlyRate', 'JobInvolvement',	'JobLevel',	'JobSatisfaction',	'MonthlyIncome',	'MonthlyRate',	'NumCompaniesWorked',	'OverTime',	'PercentSalaryHike', 'PerformanceRating',	'RelationshipSatisfaction',	'StockOptionLevel',	'TotalWorkingYears'	,'TrainingTimesLastYear'	, 'WorkLifeBalance',	'YearsAtCompany'	,'YearsInCurrentRole', 'YearsSinceLastPromotion',	'YearsWithCurrManager']
+    numerical = ['Age', 'DailyRate', 'DistanceFromHome',	'Education', 'EnvironmentSatisfaction', 'HourlyRate', 'JobInvolvement',	'JobLevel',	'JobSatisfaction',	'MonthlyIncome',	'MonthlyRate',	'NumCompaniesWorked','Over18','OverTime',	'PercentSalaryHike', 'PerformanceRating',	'RelationshipSatisfaction',	'StockOptionLevel',	'TotalWorkingYears'	,'TrainingTimesLastYear'	, 'WorkLifeBalance',	'YearsAtCompany'	,'YearsInCurrentRole', 'YearsSinceLastPromotion',	'YearsWithCurrManager']
         
     ## Divide the data into train and test
     df_train_all, df_test =train_test_split(df, test_size = 0.25, random_state = 0)
@@ -105,7 +137,7 @@ def transform_data(df: pd.DataFrame):
     X_train = scaler.fit_transform(X_train)
     X_val = scaler.transform(X_val)
 
-    return X_train, y_train, X_val, y_val, train_dicts
+    return X_train, y_train, X_val, y_val, df_train,df_val, numerical, categorical, train_dicts, val_dicts
 
 @flow(name = 'Applying ML Model')
 def applying_model():
@@ -117,7 +149,7 @@ def applying_model():
     
     """
     df = extract_data()
-    X_train, y_train, X_val, y_val, train_dicts = transform_data(df)
+    X_train, y_train, X_val, y_val, df_train,df_val, numerical, categorical, train_dicts, val_dicts = transform_data(df)
     with mlflow.start_run():
         # Create tags and log params
         mlflow.set_tag('model_type', 'logistic_regression')
@@ -141,6 +173,9 @@ def applying_model():
         )
     #Call create_pipeline()
     create_pipeline(train_dicts, y_train)
+    #Create a model_performance_dashboard
+    model_performance_dashboard(df_train,train_dicts, df_val, val_dicts, numerical, categorical)
+
     return logreg
 
 
