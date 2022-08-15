@@ -11,7 +11,7 @@
     - [Install ipython kernel](#install-ipython-kernel)
 - [Tracking Experiment with Mlflow](#tracking-experiment-with-mlflow)
   - [Model Register](#model-register)
-- [Orchestation of the project](#orchestation-of-the-project)
+- [Orchestration of the project](#orchestration-of-the-project)
   - [Install prefect](#install-prefect)
   - [Authenticating with Prefect Cloud (Optional)](#authenticating-with-prefect-cloud-optional)
   - [Start orion UI](#start-orion-ui)
@@ -23,6 +23,7 @@
   - [Start an agent](#start-an-agent)
   - [Schedule the deployment](#schedule-the-deployment)
 - [Monitoring](#monitoring)
+  - [](#)
 
 # Problem Explanation
 
@@ -87,7 +88,7 @@ I'm using a sklearn library, mlflow provides a way to register the model with th
   )
 ```
 ![Registered model](images/mlflow-registered-model.PNG)
-# Orchestation of the project
+# Orchestration of the project
 I'm going to use [Prefect](https://prefect.io/) to orchestrate the project.
 ## Install prefect
 ```
@@ -139,4 +140,7 @@ Now, when you run a deployment with the `-t tag` option, the agent will pick up 
 # Monitoring
 I'm going to use [Evidently](https://evidentlyai.com/) to monitor the experiment.
 
+##  
+```
+pip install evidently
 ```
