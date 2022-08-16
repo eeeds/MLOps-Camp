@@ -24,6 +24,9 @@
   - [Schedule the deployment](#schedule-the-deployment)
 - [Monitoring](#monitoring)
   - [Install evidently](#install-evidently)
+  - [Dashboard for classification report](#dashboard-for-classification-report)
+  - [Results](#results)
+- [Tests](#tests)
 
 # Problem Explanation
 
@@ -133,7 +136,7 @@ Now, when you run a deployment with the `-t tag` option, the agent will pick up 
 ## Schedule the deployment
 - Go to the UI
 - Select `Add Schedule`
-![Schedule](images/prefect-schedule.png)
+![Schedule](images/prefect-schedule.PNG)
 - I'm going to select `Cron` with a value of `0 0 * * *` that means every day at 12:00 AM.
 - `Timezone` is important, so, be sure to select the correct timezone.
 
@@ -145,3 +148,15 @@ You can install it with the following command:
 ```
 pip install evidently
 ```
+## Dashboard for classification report
+Classification Performance report evaluates the quality of a classification model. It works both for binary and multi-class classification. If you have a probabilistic classification, refer to a separate report.
+This report can be generated for a single model, or as a comparison. You can contrast your current production model performance against the past or an alternative model.
+
+[More info here](https://docs.evidentlyai.com/reports/classification-performance)
+
+## Results
+Using train data and valid data to evaluate the model I've create the following dashboard:
+![Results](images/evidently-dashboard.PNG)
+You can see the resuls in the [`dashboard`](dashboards/df_model_performance.html) folder.
+
+# Tests 
