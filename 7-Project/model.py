@@ -31,7 +31,21 @@ mlflow.set_experiment(EXPERIMENT_NAME)
 
 @task(name = 'Model Performance Dashboard', retries=3)
 def model_performance_dashboard(df_train,train_dicts, df_val, val_dicts, numerical_features, categorical_features):
+    """
+    This function creates a dashboard that shows the performance of the model.
 
+    Args:
+        df_train (pandas.DataFrame): Training dataframe.
+        train_dicts (list): List of dictionaries with the training data.
+        df_val (pandas.DataFrame): Validation dataframe.
+        val_dicts (list): List of dictionaries with the validation data.
+        numerical_features (list): List of numerical features.
+        categorical_features (list): List of categorical features.
+    
+    Returns:
+        None, but it creates a dashboard and saves it in the folder called 'dashboards'.
+    
+    """
     df_column_mapping = ColumnMapping()
     df_column_mapping.target = 'target'
     df_column_mapping.prediction = 'prediction'
