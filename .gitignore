@@ -3,5 +3,10 @@
 4*/web-service-mlflow/*.json
 4*/web-service-mlflow/data
 4*/web-service-mlflow/mlflow.db
+6*
 7-Project/prefect_*
 7-Project/mlruns
+7-Project/__pycache__
+7-Project/.vscode
+7-Project/.pytest_cache
+7-Project/tests/__pycache__

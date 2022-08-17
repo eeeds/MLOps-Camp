@@ -1,7 +1,7 @@
 # Import libraries
-from tabnanny import verbose
-import pandas as pd
 import pickle
+import pandas as pd
+
 
 from sklearn.linear_model import LogisticRegression
 from sklearn.feature_extraction import DictVectorizer
@@ -15,10 +15,6 @@ from sklearn.metrics import accuracy_score
 from evidently.dashboard import Dashboard
 from evidently.pipeline.column_mapping import ColumnMapping
 from evidently.dashboard.tabs import ClassificationPerformanceTab
-
-from evidently.model_profile import Profile
-from evidently.model_profile.sections import ClassificationPerformanceProfileSection
-
 
 
 from prefect import task, flow
@@ -41,10 +37,8 @@ def model_performance_dashboard(df_train,train_dicts, df_val, val_dicts, numeric
         val_dicts (list): List of dictionaries with the validation data.
         numerical_features (list): List of numerical features.
         categorical_features (list): List of categorical features.
-    
     Returns:
         None, but it creates a dashboard and saves it in the folder called 'dashboards'.
-    
     """
     df_column_mapping = ColumnMapping()
     df_column_mapping.target = 'target'
@@ -68,16 +62,13 @@ def model_performance_dashboard(df_train,train_dicts, df_val, val_dicts, numeric
 def create_pipeline(train_dicts, y_train):
     """
     Create a pipeline to train a model.
-
     Args:
         train_dicts : list of dicts
             The list of dictionaries to use for training.
         y_train : list of floats    
             The list of target values to use for training.
-
     Returns:
         sklearn.pipeline.Pipeline:The pipeline to use for training.
-
     """
     pipeline = make_pipeline(
         DictVectorizer(),
@@ -93,10 +84,8 @@ def create_pipeline(train_dicts, y_train):
 def extract_data() -> pd.DataFrame:
     """
     Extract data from csv file and return dataframe
-
     Returns:
         pd.DataFrame: dataframe with data
-
     """
     df = pd.read_csv('datasets/HR-Employee-Attrition.csv')
     # Delete unnecessary columns
@@ -105,14 +94,12 @@ def extract_data() -> pd.DataFrame:
     df['Attrition'] = df['Attrition'].apply(lambda x: 1 if x=='Yes' else 0)
     df['Over18'] = df['Over18'].apply(lambda x: 1 if x=='Yes' else 0)
     df['OverTime'] = df['OverTime'].apply(lambda x: 1 if x=='Yes' else 0)
-
     return df
 
 @task(name ='Transform_data' ,retries = 3)
 def transform_data(df: pd.DataFrame):
     """
     Transform dataframe to get features and labels
-
     Args:
         df (pd.DataFrame): dataframe with data
     Returns:
@@ -125,42 +112,33 @@ def transform_data(df: pd.DataFrame):
     categorical = ['BusinessTravel', 'Department', 'EducationField', 'Gender', 'JobRole', 'MaritalStatus']
     #Numerical data
     numerical = ['Age', 'DailyRate', 'DistanceFromHome',	'Education', 'EnvironmentSatisfaction', 'HourlyRate', 'JobInvolvement',	'JobLevel',	'JobSatisfaction',	'MonthlyIncome',	'MonthlyRate',	'NumCompaniesWorked','Over18','OverTime',	'PercentSalaryHike', 'PerformanceRating',	'RelationshipSatisfaction',	'StockOptionLevel',	'TotalWorkingYears'	,'TrainingTimesLastYear'	, 'WorkLifeBalance',	'YearsAtCompany'	,'YearsInCurrentRole', 'YearsSinceLastPromotion',	'YearsWithCurrManager']
-        
     ## Divide the data into train and test
     df_train_all, df_test =train_test_split(df, test_size = 0.25, random_state = 0)
-    
     ##Obtain y values
     y_train_all = df_train_all['Attrition'].astype(int).values
     y_test = df_test['Attrition'].astype(int).values
-
     ## Training model 
     df_train, df_val = train_test_split(df_train_all, test_size = 0.25, random_state = 0)
     y_train = df_train['Attrition'].astype(int).values
     y_val = df_val['Attrition'].astype(int).values
-    
     ## Use DictVectorizer()
     train_dicts = df_train[categorical + numerical].to_dict(orient = 'records')
     val_dicts = df_val[categorical + numerical].to_dict(orient = 'records')
-    
     dv = DictVectorizer()
     X_train = dv.fit_transform(train_dicts)
     X_val = dv.transform(val_dicts)
-    
     ## Applying MaxAbsScaler() to the data
     scaler = MaxAbsScaler()
     X_train = scaler.fit_transform(X_train)
     X_val = scaler.transform(X_val)
-
     return X_train, y_train, X_val, y_val, df_train,df_val, numerical, categorical, train_dicts, val_dicts
 
 @flow(name = 'Applying ML Model')
 def applying_model():
     """
     Apply model to data
-
     Returns:
         None
-    
     """
     df = extract_data()
     X_train, y_train, X_val, y_val, df_train,df_val, numerical, categorical, train_dicts, val_dicts = transform_data(df)
@@ -176,7 +154,6 @@ def applying_model():
         y_pred = logreg.predict(X_val)
         accuracy = accuracy_score(y_val, y_pred)
         mlflow.log_metric('accuracy', accuracy)
-
         mlflow.log_artifact(local_path='models/logreg.pkl',
                             artifact_path='models/logreg')
         #Model Register
@@ -191,11 +168,13 @@ def applying_model():
     model_performance_dashboard(df_train,train_dicts, df_val, val_dicts, numerical, categorical)
 
     return logreg
-
-
 if __name__ == '__main__':
     """
-    This is the main function that will be executed when you run this file
+    When you run this python script from the command line, it will run the flow
+    Args:
+        None
+    Returns:
+        None
     """
     logreg = applying_model()
     # Save model to pickle file

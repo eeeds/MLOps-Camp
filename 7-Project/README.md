@@ -1,3 +1,5 @@
+[![linting: pylint](https://img.shields.io/badge/linting-pylint-yellowgreen)](https://github.com/PyCQA/pylint)
+
 ## Final Project 
 - [Problem Explanation](#problem-explanation)
 - [Enviroment](#enviroment)
@@ -27,6 +29,13 @@
   - [Dashboard for classification report](#dashboard-for-classification-report)
   - [Results](#results)
 - [Tests](#tests)
+  - [Configure Tests](#configure-tests)
+- [Linting and Formatting](#linting-and-formatting)
+  - [Intall Pylint](#intall-pylint)
+  - [Lint the code](#lint-the-code)
+  - [Runs Results](#runs-results)
+  - [View Results in Visual Studio Code](#view-results-in-visual-studio-code)
+  - [Add `.pylintrc` file](#add-pylintrc-file)
 
 # Problem Explanation
 
@@ -166,3 +175,34 @@ Install pytest with the following command:
 ```
 pip install pytest
 ```
+## Configure Tests
+1. Go to `tests` extension in VS Code and select a folder that contains the tests, in this case `tests/`.
+2. Select `Pytest` as the test runner.
+
+# Linting and Formatting
+I'm going to use [Pylint](https://black.readthedocs.io/en/stable/) to lint and format the code.
+## Intall Pylint
+Use this command to install pylint:
+```
+pip install pylint
+```
+## Lint the code
+You can lint your python file as follows:
+```
+pylint my_file.py
+```
+In my case, `pylint model.py`. 
+
+## Runs Results
+1. In the first time I'd obtained a score 5.23/10 (very bad).
+2. Score of 5.88/10 (still bad).
+3. Score of 6.47/10 (quite good).
+4. After creating [pyproject.toml](pyproject.toml) my score raises to 8.35/10 (very good).
+5. Now my score is 9.65/10 (excellent).
+## View Results in Visual Studio Code
+1. Press `Ctrl + Shift + P` and then type `linting` and select `Pylint`.
+2. Run linting with `Ctrl + Shift + P` and `Run linting`.
+## Add `.pylintrc` file
+You can add a `.pylintrc` file in the root of the project to configure pylint.
+
+I'm going to use `pyproject.toml` instead.

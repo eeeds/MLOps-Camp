@@ -1,0 +1,3 @@
+[tool.pylint.'MESSAGES CONTROL']
+max-line-length = 500
+disable = "C0330, R0201, C0103, W0621, R0913, W0612, C0303, W0105"
