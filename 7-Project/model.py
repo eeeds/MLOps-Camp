@@ -1,7 +1,10 @@
 # Import libraries
+import os
+import sys
 import pickle
 import pandas as pd
-
+sys.path.append(r'C:\Users\User\Desktop\Github\MLOps-Camp\7-Project\keys')
+import keys_apis
 
 from sklearn.linear_model import LogisticRegression
 from sklearn.feature_extraction import DictVectorizer
@@ -20,11 +23,26 @@ from prefect import task, flow
 
 import mlflow
 
+import whylogs as why
+from whylogs.app import Session
+from whylogs.app.writers import WhyLabsWriter
+
+
+
+
 mlflow.set_tracking_uri("sqlite:///mydb.sqlite")
 EXPERIMENT_NAME = "hr-employee-attrition-project"
-mlflow.set_experiment(EXPERIMENT_NAME)
-
-
+mlflow.set_experiment(EXPERIMENT_NAME)  
+@task(name = 'Starting Whylogs', retries = 3)
+def starting_whylogs():
+    k = keys_apis.Keys()
+    k.obtain_whylogs_key()
+    os.environ["WHYLABS_API_KEY"] = k.whylog_key
+    os.environ["WHYLABS_DEFAULT_ORG_ID"] = "org-tgNtgy"
+    # Adding the WhyLabs Writer to utilize WhyLabs platform
+    writer = WhyLabsWriter("", formats=[])
+    session = Session(project="model-1", pipeline="mlops-project-pipeline", writers=[writer])
+    return writer,session
 @task(name="Model Performance Dashboard", retries=3)
 def model_performance_dashboard(
     df_train, train_dicts, df_val, val_dicts, numerical_features, categorical_features
@@ -89,7 +107,7 @@ def create_pipeline(train_dicts, y_train):
 
 
 @task(name="Extract_Data", retries=3)
-def extract_data() -> pd.DataFrame:
+def extract_data(writer, session) -> pd.DataFrame:
     """
     Extract data from csv file and return dataframe
     Returns:
@@ -102,6 +120,9 @@ def extract_data() -> pd.DataFrame:
     df["Attrition"] = df["Attrition"].apply(lambda x: 1 if x == "Yes" else 0)
     df["Over18"] = df["Over18"].apply(lambda x: 1 if x == "Yes" else 0)
     df["OverTime"] = df["OverTime"].apply(lambda x: 1 if x == "Yes" else 0)
+    
+    with session.logger(tags={"datasetId": "model-1"}) as ylog:
+        ylog.log_dataframe(df)
     return df
 
 
@@ -194,7 +215,8 @@ def applying_model():
     Returns:
         None
     """
-    df = extract_data()
+    writer, session = starting_whylogs()
+    df = extract_data(writer, session)
     (
         X_train,
         y_train,

@@ -34,9 +34,15 @@
   - [Start an agent](#start-an-agent)
   - [Schedule the deployment](#schedule-the-deployment)
 - [Monitoring](#monitoring)
-  - [Install evidently](#install-evidently)
+  - [Evidently](#evidently)
+    - [Install evidently](#install-evidently)
   - [Dashboard for classification report](#dashboard-for-classification-report)
   - [Results](#results)
+  - [Whylogs](#whylogs)
+    - [Install whylogs](#install-whylogs)
+    - [Get your API key](#get-your-api-key)
+    - [First approach:Connect dataset](#first-approachconnect-dataset)
+    - [Results](#results-1)
 - [Tests](#tests)
   - [Configure Tests](#configure-tests)
 - [Linting and Formatting](#linting-and-formatting)
@@ -49,6 +55,8 @@
   - [Add Black to pyproject.toml](#add-black-to-pyprojecttoml)
   - [Apply Isort](#apply-isort)
   - [Add Isort to pyproject.toml](#add-isort-to-pyprojecttoml)
+- [Git pre-commits hooks](#git-pre-commits-hooks)
+  - [Install pre-commit](#install-pre-commit)
 
 # Problem Explanation
 
@@ -163,9 +171,9 @@ Now, when you run a deployment with the `-t tag` option, the agent will pick up 
 - `Timezone` is important, so, be sure to select the correct timezone.
 
 # Monitoring
-I'm going to use [Evidently](https://evidentlyai.com/) to monitor the experiment.
-
-## Install evidently
+I'm going to use [Evidently](https://evidentlyai.com/) and [Whylogs](https://github.com/whylabs/whylogs)to monitor the experiment.
+## Evidently
+### Install evidently
 You can install it with the following command:
 ```
 pip install evidently
@@ -180,7 +188,31 @@ This report can be generated for a single model, or as a comparison. You can con
 Using train data and valid data to evaluate the model I've created the following dashboard:
 ![Results](images/evidently-dashboard.PNG)
 You can see the resuls in the [`dashboard`](dashboards/df_model_performance.html) folder.
+## Whylogs
+### Install whylogs
+```
+pip install "whylogs<1.0" 
+```
+We're installing this version because the platform doesn't yet support v1.
+### Get your API key
+Go to [whylogs.com](https://whylogs.com/) and create an account, then go to your profile and click on the `API` tab.
+### First approach:Connect dataset
+As a first approach, we can connect the dataset to the experiment.
 
+I use the following command to connect the dataset to the experiment:
+```
+import whylogs as why
+from whylogs.app import Session
+from whylogs.app.writers import WhyLabsWriter
+
+writer = WhyLabsWriter("", formats=[])
+    session = Session(project="model-1", pipeline="mlops-project-pipeline", writers=[writer])
+
+with session.logger(tags={"datasetId": "model-1"}) as ylog:
+        ylog.log_dataframe(df)
+```
+### Results
+![images](images/whylogs-df.PNG)
 # Tests 
 I'll use Pytest to test the model.
 
@@ -260,3 +292,10 @@ where:
 - `multi_line_output` is the number of lines that will be used to output a multiline string.
 - `length_sort` is a boolean that indicates if you want to sort by length.
 - `order_by_type` is a boolean that indicates if you want to order by type.
+
+# Git pre-commits hooks
+I'm going to install `pre-commit` library. [More info here](https://pre-commit.com/).
+## Install pre-commit
+```
+pip install pre-commit
+```

@@ -10,3 +10,5 @@
 7-Project/.vscode
 7-Project/.pytest_cache
 7-Project/tests/__pycache__
+7-Project/whylog*
+7-Project/keys/
