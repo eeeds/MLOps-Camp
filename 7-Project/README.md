@@ -36,6 +36,10 @@
   - [Runs Results](#runs-results)
   - [View Results in Visual Studio Code](#view-results-in-visual-studio-code)
   - [Add `.pylintrc` file](#add-pylintrc-file)
+  - [Formatting with black and isort](#formatting-with-black-and-isort)
+  - [Add Black to pyproject.toml](#add-black-to-pyprojecttoml)
+  - [Apply Isort](#apply-isort)
+  - [Add Isort to pyproject.toml](#add-isort-to-pyprojecttoml)
 
 # Problem Explanation
 
@@ -198,7 +202,7 @@ In my case, `pylint model.py`.
 2. Score of 5.88/10 (still bad).
 3. Score of 6.47/10 (quite good).
 4. After creating [pyproject.toml](pyproject.toml) my score raises to 8.35/10 (very good).
-5. Now my score is 9.65/10 (excellent).
+5. Now my score is 9.76/10 (excellent).
 ## View Results in Visual Studio Code
 1. Press `Ctrl + Shift + P` and then type `linting` and select `Pylint`.
 2. Run linting with `Ctrl + Shift + P` and `Run linting`.
@@ -206,3 +210,44 @@ In my case, `pylint model.py`.
 You can add a `.pylintrc` file in the root of the project to configure pylint.
 
 I'm going to use `pyproject.toml` instead.
+## Formatting with black and isort
+Install black and isort with the following command:
+```
+pip install black isort
+```
+Before you run black, you can check the changes that will do with the following command:
+```
+black --diff my_file.py
+```
+After that, you can run black with the following command:
+```
+black my_file.py
+```
+## Add Black to pyproject.toml
+You can add some configurations to `pyproject.toml`, in my case:
+```
+[tool.black]
+line-length = 120
+target-version = ['py39']
+skip-string-normalization = true
+```
+where: 
+- `line-length` is the maximum length of a line.
+- `target-version` is the version of python that you want to use.
+- `skip-string-normalization` is a boolean that indicates if you want to skip string normalization.
+## Apply Isort
+You can apply isort with the following command:
+```
+isort my_file.py
+```
+## Add Isort to pyproject.toml
+Add the following configurations to `pyproject.toml`:
+```
+multi_line_output = 3
+length_sort = true
+order_by_type = true
+```
+where:
+- `multi_line_output` is the number of lines that will be used to output a multiline string.
+- `length_sort` is a boolean that indicates if you want to sort by length.
+- `order_by_type` is a boolean that indicates if you want to order by type.
