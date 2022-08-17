@@ -155,8 +155,14 @@ This report can be generated for a single model, or as a comparison. You can con
 [More info here](https://docs.evidentlyai.com/reports/classification-performance)
 
 ## Results
-Using train data and valid data to evaluate the model I've create the following dashboard:
+Using train data and valid data to evaluate the model I've created the following dashboard:
 ![Results](images/evidently-dashboard.PNG)
 You can see the resuls in the [`dashboard`](dashboards/df_model_performance.html) folder.
 
 # Tests 
+I'll use Pytest to test the model.
+
+Install pytest with the following command:
+```
+pip install pytest
+```
