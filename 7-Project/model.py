@@ -3,6 +3,7 @@ import os
 import sys
 import pickle
 import pandas as pd
+from datetime import datetime
 sys.path.append(r'C:\Users\User\Desktop\Github\MLOps-Camp\7-Project\keys')
 import keys_apis
 
@@ -33,8 +34,43 @@ from whylogs.proto import ModelType
 mlflow.set_tracking_uri("sqlite:///mydb.sqlite")
 EXPERIMENT_NAME = "hr-employee-attrition-project"
 mlflow.set_experiment(EXPERIMENT_NAME)  
+
+@task(name = 'Performance Metrics', retries = 3)
+def performance_metrics(X_val, y_val, y_pred, session, logreg):
+    """
+    This function calculates the performance metrics and save it into Whylabs.
+    Args:
+        X_val (pandas.DataFrame): Validation features.
+        y_val (pandas.DataFrame): Validation labels.
+        y_pred (pandas.DataFrame): Predicted labels.
+        session (whylogs.app.Session): Whylogs session.
+        logreg (sklearn.linear_model.LogisticRegression): Logistic regression model.
+    Returns:
+        None 
+    """
+    scores = [max(p) for p in logreg.predict_proba(X_val)]
+    with session.logger(tags={"datasetId": "model-1"}, dataset_timestamp = datetime.now()) as ylog:
+        ylog.log_metrics(
+            targets = list(y_val),
+            predictions = list(y_pred),
+            scores = scores,
+            model_type = ModelType.CLASSIFICATION,
+            target_field="Attrition",
+            prediction_field="prediction",
+            score_field = "Normalized Prediction Probability",
+        )
+    #closing the session
+    session.close()
 @task(name = 'Starting Whylogs', retries = 3)
 def starting_whylogs():
+    """
+    This function starts the Whylogs session.
+    Args:
+        None
+    Returns:
+        writer (whylogs.app.writers.WhyLabsWriter): Whylogs writer.
+        session (whylogs.app.Session): Whylogs session.    
+    """
     k = keys_apis.Keys()
     k.obtain_whylogs_key()
     os.environ["WHYLABS_API_KEY"] = k.whylog_key
@@ -49,7 +85,6 @@ def model_performance_dashboard(
 ):
     """
     This function creates a dashboard that shows the performance of the model.
-
     Args:
         df_train (pandas.DataFrame): Training dataframe.
         train_dicts (list): List of dictionaries with the training data.
@@ -121,7 +156,7 @@ def extract_data(writer, session) -> pd.DataFrame:
     df["Over18"] = df["Over18"].apply(lambda x: 1 if x == "Yes" else 0)
     df["OverTime"] = df["OverTime"].apply(lambda x: 1 if x == "Yes" else 0)
     
-    with session.logger(tags={"datasetId": "model-1"}) as ylog:
+    with session.logger(tags={"datasetId": "model-1"}, dataset_timestamp = datetime.now()) as ylog:
         ylog.log_dataframe(df)
     return df
 
@@ -257,12 +292,7 @@ def applying_model():
         df_train, train_dicts, df_val, val_dicts, numerical, categorical
     )
     # Capture permorfance metrics to show
-    with session.logger(tags={"datasetId": "model-1"}) as ylog:
-        ylog.log_metrics(
-            targets = y_val,
-            predictions = y_pred,
-            model_type = ModelType.CLASSIFICATION,
-        )
+    performance_metrics(X_val, y_val, y_pred, session, logreg)
 
     return logreg
 
