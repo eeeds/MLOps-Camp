@@ -35,14 +35,15 @@
   - [Schedule the deployment](#schedule-the-deployment)
 - [Monitoring](#monitoring)
   - [Evidently](#evidently)
-    - [Install evidently](#install-evidently)
+  - [Install evidently](#install-evidently)
   - [Dashboard for classification report](#dashboard-for-classification-report)
   - [Results](#results)
   - [Whylogs](#whylogs)
-    - [Install whylogs](#install-whylogs)
-    - [Get your API key](#get-your-api-key)
-    - [First approach:Connect dataset](#first-approachconnect-dataset)
-    - [Results](#results-1)
+  - [Install whylogs](#install-whylogs)
+  - [Get your API key](#get-your-api-key)
+  - [First approach: Connect dataset](#first-approach-connect-dataset)
+  - [Results](#results-1)
+  - [Activate Presets](#activate-presets)
 - [Tests](#tests)
   - [Configure Tests](#configure-tests)
 - [Linting and Formatting](#linting-and-formatting)
@@ -173,7 +174,7 @@ Now, when you run a deployment with the `-t tag` option, the agent will pick up 
 # Monitoring
 I'm going to use [Evidently](https://evidentlyai.com/) and [Whylogs](https://github.com/whylabs/whylogs)to monitor the experiment.
 ## Evidently
-### Install evidently
+## Install evidently
 You can install it with the following command:
 ```
 pip install evidently
@@ -189,17 +190,17 @@ Using train data and valid data to evaluate the model I've created the following
 ![Results](images/evidently-dashboard.PNG)
 You can see the resuls in the [`dashboard`](dashboards/df_model_performance.html) folder.
 ## Whylogs
-### Install whylogs
+## Install whylogs
 ```
 pip install "whylogs<1.0" 
 ```
 We're installing this version because the platform doesn't yet support v1.
-### Get your API key
+## Get your API key
 Go to [whylogs.com](https://whylogs.com/) and create an account, then go to your profile and click on the `API` tab.
-### First approach:Connect dataset
+## First approach: Connect dataset
 As a first approach, we can connect the dataset to the experiment.
 
-I use the following command to connect the dataset to the experiment:
+I've used the following command to connect the dataset to the experiment:
 ```
 import whylogs as why
 from whylogs.app import Session
@@ -211,8 +212,13 @@ writer = WhyLabsWriter("", formats=[])
 with session.logger(tags={"datasetId": "model-1"}) as ylog:
         ylog.log_dataframe(df)
 ```
-### Results
+## Results
 ![images](images/whylogs-df.PNG)
+## Activate Presets
+We can activate some `Preset monitors` to monitor different part of the experiment.
+
+You can receive alerts from these `Preset monitors`, in my case I've enabled:
+![Presets](images/whylabs-presets.PNG)
 # Tests 
 I'll use Pytest to test the model.
 

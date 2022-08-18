@@ -26,7 +26,7 @@ import mlflow
 import whylogs as why
 from whylogs.app import Session
 from whylogs.app.writers import WhyLabsWriter
-
+from whylogs.proto import ModelType
 
 
 
@@ -256,6 +256,13 @@ def applying_model():
     model_performance_dashboard(
         df_train, train_dicts, df_val, val_dicts, numerical, categorical
     )
+    # Capture permorfance metrics to show
+    with session.logger(tags={"datasetId": "model-1"}) as ylog:
+        ylog.log_metrics(
+            targets = y_val,
+            predictions = y_pred,
+            model_type = ModelType.CLASSIFICATION,
+        )
 
     return logreg
 
