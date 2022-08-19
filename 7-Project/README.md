@@ -43,6 +43,9 @@
   - [Get your API key](#get-your-api-key)
   - [First approach: Connect dataset](#first-approach-connect-dataset)
   - [Results](#results-1)
+  - [Classifier Report](#classifier-report)
+  - [Generate performance report](#generate-performance-report)
+  - [Results](#results-2)
   - [Activate Presets](#activate-presets)
 - [Tests](#tests)
   - [Configure Tests](#configure-tests)
@@ -227,6 +230,25 @@ with session.logger(tags={"datasetId": "model-1"}) as ylog:
 ```
 ## Results
 ![images](images/whylogs-df.PNG)
+## Classifier Report
+First: Make sure that you have selected `Classification` model in your Whylabs Project.
+![Whylabs-Classification](images/whylabs-classification.PNG)
+## Generate performance report
+```
+    scores = [max(p) for p in logreg.predict_proba(X_val)]
+    with session.logger(tags={"datasetId": "model-1"}, dataset_timestamp = datetime.now()) as ylog:
+        ylog.log_metrics(
+            targets = list(y_val),
+            predictions = list(y_pred),
+            scores = scores,
+            model_type = ModelType.CLASSIFICATION,
+            target_field="Attrition",
+            prediction_field="prediction",
+            score_field = "Normalized Prediction Probability",
+        )
+```
+## Results
+![Classification Results](images/whylogs-classification-results.PNG)
 ## Activate Presets
 We can activate some `Preset monitors` to monitor different part of the experiment.
 
