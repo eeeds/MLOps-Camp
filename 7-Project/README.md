@@ -67,6 +67,10 @@
   - [Black pre-commit hook](#black-pre-commit-hook)
   - [Pylint pre-commit hook](#pylint-pre-commit-hook)
   - [Pytest pre-commit hook](#pytest-pre-commit-hook)
+- [Makefiles and Make](#makefiles-and-make)
+  - [Install make with the following command:](#install-make-with-the-following-command)
+  - [Example:](#example)
+  - [Run make with the following command:](#run-make-with-the-following-command)
 
 # Problem Explanation
 
@@ -430,4 +434,34 @@ Add the following configuration to `.pre-commit-config.yaml`:
         entry: pytest
         language: system
         pass_filenames: false
-        always_run: true```
+        always_run: true
+```
+
+# Makefiles and Make
+Make is a tool which controls the generation of executables and other non-source files of a program from the program's source files. Make gets its knowledge of how to build your program from a file called the makefile, which lists each of the non-source files and how to compute it from other files. When you write a program, you should write a makefile for it, so that it is possible to use Make to build and install the program.
+
+## Install make with the following command:
+```
+sudo apt install make
+```
+or if you are using Windows, you can install make with the following command (as a administrator):
+```
+choco install make
+```
+where `choco` is the command to install chocolatey packages.
+
+## Example:
+```
+test:
+	echo test 
+
+other_thing:
+	echo other thing 
+	
+run: test other_thing
+	echo run
+```
+## Run make with the following command:
+```
+make run 
+```
