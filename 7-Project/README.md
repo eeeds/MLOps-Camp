@@ -81,6 +81,7 @@
   - [Install Streamlit](#install-streamlit)
   - [Model that we'll use](#model-that-well-use)
   - [Load the model](#load-the-model)
+  - [Run the app](#run-the-app)
 
 # Problem Explanation
 
@@ -540,3 +541,9 @@ def load_model():
     return pipeline
 pipeline = load_model()
 ```
+## Run the app
+Run the app with the following command:
+```
+streamlit run streamlit_app.py
+```
+where `streamlit_app.py` is the name of the file.
