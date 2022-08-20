@@ -77,6 +77,10 @@
 - [Flask app: Evidently](#flask-app-evidently)
   - [Install Flask](#install-flask)
   - [Create a Flask app](#create-a-flask-app)
+- [Streamlit app](#streamlit-app)
+  - [Install Streamlit](#install-streamlit)
+  - [Model that we'll use](#model-that-well-use)
+  - [Load the model](#load-the-model)
 
 # Problem Explanation
 
@@ -515,3 +519,24 @@ where:
 2. render_template is a function that takes the name of the html file and returns the html code.
 3. I've selected port = 9696.
 
+# Streamlit app 
+We can make a Streamlit app using our model. 
+## Install Streamlit
+Install Streamlit with the following command:
+```
+pip install streamlit
+```
+## Model that we'll use 
+We'll use the last model we trained. This model will be at `models` folder.
+## Load the model
+Load the model with the following command:
+```
+def load_model():
+    model = 'models/pipeline.bin'
+
+    with open(model, 'rb') as f_in:
+        pipeline = pickle.load(f_in)
+
+    return pipeline
+pipeline = load_model()
+```
