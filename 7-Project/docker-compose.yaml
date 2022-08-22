@@ -1,0 +1,9 @@
+version: '3.7'
+
+services:
+  evidently_app:
+    build: 
+      context: dashboards
+      dockerfile: Dockerfile
+    ports:
+      - "8501:8501"

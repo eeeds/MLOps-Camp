@@ -11,6 +11,7 @@
 
 ## Final Project 
 - [Problem Explanation](#problem-explanation)
+  - [Diagram](#diagram)
 - [Enviroment](#enviroment)
   - [Create a conda enviroment for the project with python=3.9](#create-a-conda-enviroment-for-the-project-with-python39)
   - [Active the enviroment](#active-the-enviroment)
@@ -84,6 +85,11 @@
   - [Run the app](#run-the-app)
 
 # Problem Explanation
+Imagine that you're working on a company that want to predict if an employee is leaving or not the company based on several factors like age, salary, etc.
+
+The main focus of this project is to build a model to predict it, register it in a register service and deploy it.
+
+## Diagram
 
 
 # Enviroment
