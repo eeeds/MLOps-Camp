@@ -17,7 +17,7 @@ st.markdown("""
 
 @st.cache(suppress_st_warning=True, allow_output_mutation=True)
 def load_model():
-    model = 'models/pipeline.bin'
+    model = '../models/pipeline.bin'
 
     with open(model, 'rb') as f_in:
         pipeline = pickle.load(f_in)
