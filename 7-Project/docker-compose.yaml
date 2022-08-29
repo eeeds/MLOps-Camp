@@ -11,6 +11,7 @@ services:
       - FLASK_APP=evidently_app.py
     volumes:
       - ./dashboards:/app
+    restart: on-failure
 
   streamlit_app:
     build:
@@ -23,3 +24,17 @@ services:
     volumes:
       - ./models:/models
       - ./streamlit:/app
+    restart: on-failure
+
+  # prefect:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   command: "prefect orion start --host=0.0.0.0"
+  #   volumes:
+  #     - ./:/app/
+  #   expose:
+  #     - "4200"
+  #   ports:
+  #     - "127.0.0.1:4200:4200"
+  #   restart: on-failure

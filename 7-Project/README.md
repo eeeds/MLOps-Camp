@@ -12,6 +12,8 @@
 ## Final Project 
 - [Problem Explanation](#problem-explanation)
   - [Diagram](#diagram)
+  - [Reproducibility](#reproducibility)
+- [Step by Step](#step-by-step)
 - [Enviroment](#enviroment)
   - [Create a conda enviroment for the project with python=3.9](#create-a-conda-enviroment-for-the-project-with-python39)
   - [Active the enviroment](#active-the-enviroment)
@@ -90,8 +92,17 @@ Imagine that you're working on a company that want to predict if an employee is 
 The main focus of this project is to build a model to predict it, register it in a register service and deploy it.
 
 ## Diagram
+![Project-Architecture](images/project-architecture.png)
+## Reproducibility
+If you want to reproduce the results of this project, run the following commands:
 
-
+```
+pip install -r requirements.txt
+python model.py
+make up
+```
+# Step by Step
+Follow the steps below to reproduce the problem and build the model.
 # Enviroment
 ## Create a conda enviroment for the project with python=3.9
 ```
@@ -153,7 +164,7 @@ I'm using a sklearn library, mlflow provides a way to register the model with th
 ```
 ![Registered model](images/mlflow-registered-model.PNG)
 # Orchestration of the project
-I'm going to use [Prefect](https://prefect.io/) to orchestrate the project.
+I'm going to use [Prefect==2.0.4](https://prefect.io/) to orchestrate the project.
 ## Install prefect
 ```
 conda install prefect -c conda-forge
@@ -550,6 +561,6 @@ pipeline = load_model()
 ## Run the app
 Run the app with the following command:
 ```
-streamlit run streamlit_app.py
+streamlit run streamlit/streamlit_app.py
 ```
 where `streamlit_app.py` is the name of the file.
